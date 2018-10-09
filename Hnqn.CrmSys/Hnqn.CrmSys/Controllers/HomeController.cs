@@ -14,7 +14,7 @@ namespace Hnqn.CrmSys.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            //CrmDbContext db = new CrmDbContext();
+            CrmDbContext db = new CrmDbContext();
             //db.Database.CreateIfNotExists();
             WorkUnit unit = new WorkUnit();
 
@@ -229,11 +229,9 @@ namespace Hnqn.CrmSys.Controllers
             //};
             //db.UserInfo.AddRange(user);
             //db.SaveChanges();
+
             return View();
         }
-        public ActionResult Show()
-        {
-            return View();
-        }
+        
     }
 }
