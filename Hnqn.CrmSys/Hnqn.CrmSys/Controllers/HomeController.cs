@@ -19,5 +19,9 @@ namespace Hnqn.CrmSys.Controllers
             WorkUnit unit = new WorkUnit();
             return View();
         }
+        public ActionResult Show()
+        {
+            return View();
+        }
     }
 }
