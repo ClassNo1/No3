@@ -18,6 +18,7 @@ namespace Hnqn.CrmSys.Controllers
             //db.Database.CreateIfNotExists();
             WorkUnit unit = new WorkUnit();
 
+
             ////客户状态模拟数据插入
             //List<UserStatus> userStatuslist = new List<UserStatus>
             //{
@@ -233,5 +234,9 @@ namespace Hnqn.CrmSys.Controllers
             return View();
         }
         
+
+            return View();
+        }
+
     }
 }

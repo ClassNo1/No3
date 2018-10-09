@@ -40,6 +40,5 @@ namespace Hnqn.CrmSys.Models
         public virtual SchoolInfo SchoolId { get; set; }
 
         public int Lock { get; set; }
-        //public virtual ICollection<Students> Students { get; set; }
     }
 }
