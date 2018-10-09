@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>学生列表</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/layui/css/layui.mobile.css" rel="stylesheet" />
+    <script src="~/layui/layui.all.js"></script>
+    <script src="~/layui/layui.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+</head>
+<body>
+    <div>
+        <table class="layui-table" lay-data="{height:315, url:'/demo/table/user/', page:true, id:'test'}" lay-filter="test">
+            <thead>
+                <tr>
+                    <th lay-data="{field:'Id', width:80, sort: true}">ID</th>
+                    <th lay-data="{field:'CusName', width:80}">姓名</th>
+                    <th lay-data="{field:'Gender', width:80, sort: true}">性别</th>
+                    <th lay-data="{field:'Age'}">年龄</th>
+                    <th lay-data="{field:'Tel'}">电话</th>
+                    <th lay-data="{field:'WeChat', sort: true}">微信号</th>
+                    <th lay-data="{field:'Address', sort: true}">地址</th>
+                    <th lay-data="{field:'Source'}">来源</th>
+                    <th lay-data="{field:'Record', sort: true}">沟通记录</th>
+                    <th lay-data="{field:'UserStatusName', sort: true}">跟进状态</th>
+                    <th lay-data="{field:'CounselingTime', sort: true}">咨询时间</th>
+                    <th lay-data="{field:'Account'}">录入者</th>
+                    <th lay-data="{field:'ProName', sort: true}">专业</th>
+                    <th lay-data="{field:'SchoolName', sort: true}">校区</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</body>
+</html>

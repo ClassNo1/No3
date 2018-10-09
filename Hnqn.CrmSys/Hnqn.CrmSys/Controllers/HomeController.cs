@@ -17,10 +17,7 @@ namespace Hnqn.CrmSys.Controllers
             //CrmDbContext db = new CrmDbContext();
             //db.Database.CreateIfNotExists();
             WorkUnit unit = new WorkUnit();
-            return View();
-        }
-        public ActionResult Show()
-        {
+
             return View();
         }
     }
