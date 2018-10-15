@@ -15,8 +15,10 @@ namespace Hnqn.CrmSys.Controllers
         // GET: Home
         public ActionResult Index()
         {
+
             
             //CrmDbContext db = new CrmDbContext();
+
             //db.Database.CreateIfNotExists();
             WorkUnit unit = new WorkUnit();
             //添加用户类型模拟数据
@@ -65,7 +67,5 @@ namespace Hnqn.CrmSys.Controllers
 
             return View();
         }
-        
-       
     }
 }

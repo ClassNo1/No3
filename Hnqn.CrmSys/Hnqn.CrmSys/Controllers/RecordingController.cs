@@ -1,6 +1,7 @@
+
 ﻿using Hnqn.CrmSys.Dal;
 using Hnqn.CrmSys.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -227,6 +228,11 @@ namespace Hnqn.CrmSys.Controllers
                                    culist.CusName
                              };
             return Json(Customerlist, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Index()
+        {
+            return View();
         }
     }
 }

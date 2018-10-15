@@ -163,9 +163,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecordingController.cs" />
+
     <Compile Include="Controllers\SysAdminController.cs" />
+
+    <Compile Include="Controllers\SchoolController.cs" />
+
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -311,14 +316,22 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+
     <Content Include="Views\SysAdmin\Login.cshtml" />
     <Content Include="Views\Recording\Recording.cshtml" />
     <Content Include="Views\Recording\RecordEdit.cshtml" />
     <Content Include="Views\Recording\RecordingAddData.cshtml" />
+
+    <Content Include="Views\Customer\CustomerListPage.cshtml" />
+    <Content Include="Views\Customer\CustomerEditPage.cshtml" />
+    <Content Include="Views\Customer\CustomerAddPage.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Recording\" />
+    <Folder Include="Views\School\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

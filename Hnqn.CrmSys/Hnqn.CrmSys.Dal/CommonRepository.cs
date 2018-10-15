@@ -43,17 +43,20 @@ namespace Hnqn.CrmSys.Dal
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        public IEnumerable<TEntity> GetAll(Func<TEntity, bool> where)
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> where)
         {
             IEnumerable<TEntity> query = null;
             if (where == null)
             {
                 query = dbSet;
+
             }
             else
             {
                 query = dbSet.Where(where);
             }
+
+
             return query;
         }
 
@@ -65,7 +68,7 @@ namespace Hnqn.CrmSys.Dal
         /// <param name="offset">第几页</param>
         /// <returns></returns>
         ///  
-        public IEnumerable<TEntity> GetPageEntitys(Func<TEntity, bool> where, int limit = 10, int offset = 0)
+        public IEnumerable<TEntity> GetPageEntitys(Expression<Func<TEntity, bool>> where, int limit = 10, int offset = 0)
         {
             IEnumerable<TEntity> query = GetAll(where);        
             return query.Skip(limit*offset).Take(limit).ToList();
