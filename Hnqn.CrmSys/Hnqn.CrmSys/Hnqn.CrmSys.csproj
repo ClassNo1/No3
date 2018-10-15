@@ -312,6 +312,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Customer\CustomerListPage.cshtml" />
+    <Content Include="Views\Customer\CustomerEditPage.cshtml" />
+    <Content Include="Views\Customer\CustomerAddPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

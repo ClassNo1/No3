@@ -9,36 +9,266 @@
     <script src="~/layui/layui.all.js"></script>
     <script src="~/layui/layui.js"></script>
     <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script>
+        //将时间戳转换为日期时间
+        function fmtDate(obj) {
+            var dateVal = obj + "";
+            if (obj != null) {
+                var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                return date.getFullYear() + "-" + month + "-" + currentDate;
+                //+ " " + hours + ":" + minutes + ":" + seconds
+            }
+        }
+    </script>
+    <script>
+        $(function () {
+            //导航栏
+            layui.use('element', function () {
+                var element = layui.element;
+            });
+            //导航栏
+            var limitcount = 10;
+            var curnum = 1;
+            //加载table组件
+            function productsearch(start, limit) {
+                layui.use(['table', 'laypage'], function () {
+                    var table = layui.table,
+                        laypage = layui.laypage;
+                    //第一个实例
+                    table.render({
+                        elem: '#customerList'
+                        , url: '/Customer/CusomerList?index=' + curnum + "&&limit=" + limitcount//数据接口
+                        ,id:'customer'
+                        , defaultToolbar: ['filter', 'print', 'exports']
+                        , cols: [[ //表头
+                            { field: 'Id', title: '学号', width: 80, sort: true, fixed: 'left', unresize: true }
+                            , { field: 'CusName', title: '姓名', width: 80, unresize: true }
+                            , { field: 'Gender', title: '性别', width: 50, unresize: true }
+                            , { field: 'Age', title: '年龄', sort: true, width: 80, unresize: true }
+                            , { field: 'Tel', title: '电话', width: 120, unresize: true }
+                            , { field: 'WeChat', title: '微信号', width: 120 }
+                            , { field: 'CounselingTime', title: '咨询日期', width: 120, unresize: true, templet: '#titleTpl1' }
+                            , { field: 'Source', title: '来源', width: 80, unresize: true }
+                            , { field: 'Record', title: '沟通记录', width: 100 }
+                            , { field: 'UserStatusName', title: '跟进状态', width: 100}
+                            , { field: 'Account', title: '录入者', width: 80, unresize: true }
+                            , { field: 'Right', title: '操作', width: 200, toolbar: '#barDemo' }
+                        ]]
+                        , page: false
+                        , done: function (res) {
+                            laypage.render({
+                                elem: 'layui-paging',
+                                count: res.tatol,
+                                curr: curnum,
+                                limit: limitcount,
+                                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        curnum = obj.curr;
+                                        limitcount = obj.limit;
+                                        productsearch(curnum, limitcount);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    //查询客户
+                    $('#customer-where-btn').click(function () {
+                        table.reload('customer',{
+                            where: { //设定异步数据接口的额外参数，任意设
+                                cusName: $('#where-customerName').val()
+                            },
+                            page: false
+                            , done: function (res) {
+                            laypage.render({
+                                elem: 'layui-paging',
+                                count: res.tatol,
+                                curr: curnum,
+                                limit: limitcount,
+                                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        curnum = obj.curr;
+                                        limitcount = obj.limit;
+                                        productsearch(curnum, limitcount);
+                                    }
+                                }
+                            });
+                        }
+                        });
+                    })
+                    //添加用户页面
+                    $('#addCustomer-btn').click(function () {
+                        layer.open({
+                            type: 2,
+                            title: '添加客户',
+                            content: '/Customer/CustomerAddPage/',
+                            area: ['700px', '450px']
+                        })
+                    })
+                    //监听工具条
+                    table.on('tool(test)', function (obj) {
+                        var data = obj.data;
+                        var layEvent = obj.event;
+                        var tr = obj.tr;
+
+                        if (layEvent == 'edit') {
+                            console.log($('.container').height() + ' ' + $('.container').width());
+                            layer.open({
+                                type: 2,
+                                title: '编辑客户',
+                                content: '/Customer/CustomerEditPage?Id='+data.Id,
+                                area: ['700px', '450px']
+                            })
+                        }
+                        if (layEvent == 'del') {
+                            layer.confirm('真的删除行么', function (index) {
+                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                layer.close(index);
+                                //向服务端发送删除指令
+                                layui.$.post(
+                                    '/Customer/DeleteCustomer?Id='+ data.Id,
+                                    { id: data.Id },
+                                    function (data, status) {
+                                        if (data.msg == 'ok') {
+                                            layer.msg('删除成功!');
+                                        } else {
+                                            layer.msg('出现未知错误!');
+                                        }
+                                    }
+                                )
+                            });
+                        }
+                    });
+                });
+            }
+            productsearch(curnum, limitcount);
+        })
+    </script>
+    <script type="text/html" id="titleTpl1">
+        {{fmtDate(d.CounselingTime)}}
+    </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    
+    <script>
+        $(function () {
+            layui.use(['laydate','from'], function () {
+                var laydate = layui.laydate;
+                var from = layui.from;
+                form.on('select(select-soucre)', function (data) {
+                    console.log(data.elem); //得到select原始DOM对象  
+                    //console.log(data.value); //得到被选中的值]  
+                    //$("#batch").val(data.value)
+                    //console.log(data.othis); //得到美化后的DOM对象}); 
+                    console.log(data.value);
+                })
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#start_date' //指定元素
+                    , range: true
+                    , min: '2016-1-1'
+                    , theme: 'molv'
+                    , calendar: true
+                    , position: 'fixed'
+                    , zIndex: 99999999
+                    , change: function (value, date) { //监听日期被切换
+                        lay('#testView').html(value);
+                    }
+                    , done: function (value, date, endDate) {
+                        console.log(value); //得到日期生成的值，如：2017-08-18
+                        console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                        console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    }
+                });
+            });
+            $.ajax({
+                url: '/Customer/GetAllSource',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    arr.push("<option value='0'>显示所有 </option>")
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].Source + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-soucre').html(arr);
+                    $.ajax({
+                        url: '/Customer/GetAllUserStatus',
+                        data: { locks: 1 },
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            var arr = [];
+                            arr.push("<option value='0'>显示所有 </option>")
+                            for (var i = 0; i < data.length; i++) {
+                                var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
+                                arr.push(option);
+                            }
+                            $('#select-userStatus').html(arr);
+                        }
+                    })
+                }
+            })
+        })
+    </script>
 </head>
 <body>
     <div>
-        <table class="layui-table" lay-data="{height:315, url:'/Customer/CustomerListPage', page:true, id:'test'}" lay-filter="test">
-            <thead>
-                <tr>
-                    <th lay-data="{field:'Id', width:80, sort: true}">ID</th>
-                    <th lay-data="{field:'CusName', width:80}">姓名</th>
-                    <th lay-data="{field:'Gender', width:80, sort: true}">性别</th>
-                    <th lay-data="{field:'Age'}">年龄</th>
-                    <th lay-data="{field:'Tel'}">电话</th>
-                    <th lay-data="{field:'WeChat', sort: true}">微信号</th>
-                    <th lay-data="{field:'Address', sort: true}">地址</th>
-                    @*<th lay-data="{field:'Source'}">来源</th>
-                        <th lay-data="{field:'Record', sort: true}">沟通记录</th>
-                        <th lay-data="{field:'UserStatusName', sort: true}">跟进状态</th>*@
-                    <th lay-data="{field:'CounselingTime', sort: true}">咨询时间</th>
-                    @*<th lay-data="{field:'Account'}">录入者</th>
-                        <th lay-data="{field:'ProName', sort: true}">专业</th>
-                        <th lay-data="{field:'SchoolName', sort: true}">校区</th>*@
-                </tr>
-            </thead>
-        </table>
+        <div id="layui-search">
+            <form class="layui-form" style="color:rgb(102, 102, 102);background-color:#f2f2f2;padding-bottom:10px;padding-top:10px;border-left:5px solid #086f27;height: 40px;" action="">
+                <div class="layui-form-item" style="width:225px;margin-left: -55px;">
+                    <label class="layui-form-label">来源</label>
+                    <div class="layui-input-block" style="width:105px;text-align:center;">
+                        <select  lay-verify="required" name="select-soucre" lay-filter="select-soucre" id="select-soucre"></select>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top: -53px;width: 225px;float: left;margin-left: 115px;">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block" style="width:105px;text-align:center;">
+                        <select name="select-userStatus" lay-verify="required" lay-filter="select-userStatus" id="select-userStatus"></select>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top: -53px;width: 300px;float: left;margin-left: 315px;">
+                    <label class="layui-form-label">咨询日期</label>
+                    <div class="layui-input-block" style="width:180px;text-align:center;">
+                        <input type="text" class="layui-input" placeholder="yyyy-mm-dd-yyyy-mm-dd" id="start_date">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top: -53px;width: 200px;float: left;margin-left: 575px;">
+                    <label class="layui-form-label">关键字</label>
+                    <div class="layui-input-block" style="width:80px;text-align:center;">
+                        <input type="text" id="where-customerName" required lay-verify="required" placeholder="电话/姓名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                
+            </form>
+            <button class="layui-btn" id="customer-where-btn" style="margin-top: -53px;width: 90px;float: left;margin-left: 785px;">
+                <i class="layui-icon">&#xe615;</i>查询
+            </button>
+            <div class="layui-btn-group" style="margin-top: -48px;width: 200px;float: left;margin-left: 920px;">
+                <button class="layui-btn layui-btn-sm" id="addCustomer-btn">
+                    <i class="layui-icon">&#xe654;</i>添加
+                </button>
+                <button class="layui-btn layui-btn-sm" id="enterCustomer-btn">
+                    <i class="layui-icon">&#xe67c;</i>导入
+                </button>
+                <button class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
+                    <i class="layui-icon">&#xe601;</i>导出
+                </button>
+            </div>
+        </div>
+        <table id="customerList" lay-filter="test"></table>
+        <div id="layui-paging"></div>
     </div>
-
-    <script src="/layui/layui.js"></script>
-    <script>
-        layui.use('table', function () {
-            var table = layui.table;
-        }
-    </script>
-</body >
-</html >
+</body>
+</html>
