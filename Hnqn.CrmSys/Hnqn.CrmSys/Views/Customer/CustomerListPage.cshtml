@@ -57,7 +57,7 @@
                             , { field: 'Record', title: '沟通记录', width: 100 }
                             , { field: 'UserStatusName', title: '跟进状态', width: 100}
                             , { field: 'Account', title: '录入者', width: 80, unresize: true }
-                            , { field: 'Right', title: '操作', width: 200, toolbar: '#barDemo' }
+                            , { field: 'Right', title: '操作', width: 120, toolbar: '#barDemo' }
                         ]]
                         , page: false
                         , done: function (res) {
@@ -103,12 +103,15 @@
                         });
                     })
                     //添加用户页面
-                    $('#addCustomer-btn').click(function () {
-                        layer.open({
-                            type: 2,
-                            title: '添加客户',
-                            content: '/Customer/CustomerAddPage/',
-                            area: ['700px', '450px']
+                    layui.use('layer', function () {
+                        var layer = layui.layer;
+                        $('#addCustomer-btn').click(function () {
+                            layer.open({
+                                type: 2,
+                                title: '添加客户',
+                                content: '/Customer/CustomerAddPage/',
+                                area: ['700px', '450px']
+                            })
                         })
                     })
                     //监听工具条
@@ -116,9 +119,7 @@
                         var data = obj.data;
                         var layEvent = obj.event;
                         var tr = obj.tr;
-
                         if (layEvent == 'edit') {
-                            console.log($('.container').height() + ' ' + $('.container').width());
                             layer.open({
                                 type: 2,
                                 title: '编辑客户',
@@ -247,7 +248,7 @@
                 <div class="layui-form-item" style="margin-top: -53px;width: 200px;float: left;margin-left: 575px;">
                     <label class="layui-form-label">关键字</label>
                     <div class="layui-input-block" style="width:80px;text-align:center;">
-                        <input type="text" id="where-customerName" required lay-verify="required" placeholder="电话/姓名" autocomplete="off" class="layui-input">
+                        <input type="text" id="where-customerName" required lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 

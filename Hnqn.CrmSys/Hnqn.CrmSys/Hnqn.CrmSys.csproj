@@ -167,6 +167,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecordingController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -314,6 +315,8 @@
     <Content Include="Views\Customer\CustomerListPage.cshtml" />
     <Content Include="Views\Customer\CustomerEditPage.cshtml" />
     <Content Include="Views\Customer\CustomerAddPage.cshtml" />
+    <Content Include="Views\User\UserManagePage.cshtml" />
+    <Content Include="Views\User\EditUserPwdPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
