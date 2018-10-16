@@ -168,6 +168,7 @@
     <Compile Include="Controllers\RecordingController.cs" />
     <Compile Include="Controllers\SysAdminController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -325,6 +326,8 @@
     <Content Include="Views\Customer\CustomerAddPage.cshtml" />
     <Content Include="Views\SysAdmin\AddUser.cshtml" />
     <Content Include="Views\SysAdmin\UpdateUser.cshtml" />
+    <Content Include="Views\User\EditUserPwdPage.cshtml" />
+    <Content Include="Views\User\UserManagePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

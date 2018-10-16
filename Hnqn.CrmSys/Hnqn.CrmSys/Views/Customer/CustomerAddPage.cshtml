@@ -217,11 +217,11 @@
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
-                            if (data != null) {
+                            if (data.susser) {
                                 layer.msg("添加成功", {
                                     icon: 1,
                                     anim: 6
-                                }) 
+                                })
                             }
                             else {
                                 layer.msg("添加失败", {
@@ -231,10 +231,6 @@
                             }
                         }
                     })
-                    layer.msg("添加成功", {
-                        icon: 1,
-                        anim: 6
-                    }) 
                 })
             })
         })

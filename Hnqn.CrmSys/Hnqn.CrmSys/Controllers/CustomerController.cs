@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Hnqn.CrmSys.Models;
+using Hnqn.CrmSys.Common;
+using System.IO;
+using System.Data;
 
 namespace Hnqn.CrmSys.Controllers
 {
@@ -175,11 +178,11 @@ namespace Hnqn.CrmSys.Controllers
 
                 unit.CustomerInfo.Insert(customer);
                 unit.Save();
-                return Json(customer);
+                return Json(new { susser = true });
             }
             catch (Exception ex)
             {
-
+                return Json(new { susser = false });
                 throw ex;
             }
         }
@@ -219,11 +222,11 @@ namespace Hnqn.CrmSys.Controllers
 
                 unit.CustomerInfo.Update(customer);
                 unit.Save();
-                return Json(customer);
+                return Json(new { susser = true });
             }
             catch (Exception ex)
             {
-
+                return Json(new { susser = false });
                 throw ex;
             }
         }
@@ -327,6 +330,31 @@ namespace Hnqn.CrmSys.Controllers
                                  sou.SchoolName
                              };
             return Json(schoolList, JsonRequestBehavior.AllowGet);
+        } 
+        #region 客户信息导出
+        public ActionResult CustomerDown()
+        {
+            var list = unit.CustomerInfo.Where(m => m.Lock == 1).ToList();
+            DataTable table = null;
+            foreach (var item in list)
+            {
+                table.Columns.Add(item.CusName);
+            }
+            MemoryStream ms = ExcelHelper.DataTableToExcel(table);
+
+            //以什么格式响应
+            Response.ContentType = "application/vnd.ms-excel";
+
+            //告诉浏览器这不是预览是下载 下载的文件名为
+            Response.AddHeader("Content-Disposition", "attachment;Filename=客户信息.xlsx");
+
+            //将内存流以2进制字符写入http输出流
+            Response.BinaryWrite(ms.ToArray());
+            //响应结束
+            Response.End();
+
+            return RedirectToRoute("CustomerListPage", "Customer");
         }
+        #endregion 客户信息导出
     }
 }

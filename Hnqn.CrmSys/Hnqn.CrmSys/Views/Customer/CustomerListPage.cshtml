@@ -43,7 +43,7 @@
                     table.render({
                         elem: '#customerList'
                         , url: '/Customer/CusomerList?index=' + curnum + "&&limit=" + limitcount//数据接口
-                        ,id:'customer'
+                        , id: 'customer'
                         , defaultToolbar: ['filter', 'print', 'exports']
                         , cols: [[ //表头
                             { field: 'Id', title: '学号', width: 80, sort: true, fixed: 'left', unresize: true }
@@ -55,7 +55,7 @@
                             , { field: 'CounselingTime', title: '咨询日期', width: 120, unresize: true, templet: '#titleTpl1' }
                             , { field: 'Source', title: '来源', width: 80, unresize: true }
                             , { field: 'Record', title: '沟通记录', width: 100 }
-                            , { field: 'UserStatusName', title: '跟进状态', width: 100}
+                            , { field: 'UserStatusName', title: '跟进状态', width: 100 }
                             , { field: 'Account', title: '录入者', width: 80, unresize: true }
                             , { field: 'Right', title: '操作', width: 120, toolbar: '#barDemo' }
                         ]]
@@ -79,27 +79,27 @@
                     });
                     //查询客户
                     $('#customer-where-btn').click(function () {
-                        table.reload('customer',{
+                        table.reload('customer', {
                             where: { //设定异步数据接口的额外参数，任意设
                                 cusName: $('#where-customerName').val()
                             },
                             page: false
                             , done: function (res) {
-                            laypage.render({
-                                elem: 'layui-paging',
-                                count: res.tatol,
-                                curr: curnum,
-                                limit: limitcount,
-                                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
-                                jump: function (obj, first) {
-                                    if (!first) {
-                                        curnum = obj.curr;
-                                        limitcount = obj.limit;
-                                        productsearch(curnum, limitcount);
+                                laypage.render({
+                                    elem: 'layui-paging',
+                                    count: res.tatol,
+                                    curr: curnum,
+                                    limit: limitcount,
+                                    layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                    jump: function (obj, first) {
+                                        if (!first) {
+                                            curnum = obj.curr;
+                                            limitcount = obj.limit;
+                                            productsearch(curnum, limitcount);
+                                        }
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
                         });
                     })
                     //添加用户页面
@@ -123,7 +123,7 @@
                             layer.open({
                                 type: 2,
                                 title: '编辑客户',
-                                content: '/Customer/CustomerEditPage?Id='+data.Id,
+                                content: '/Customer/CustomerEditPage?Id=' + data.Id,
                                 area: ['700px', '450px']
                             })
                         }
@@ -133,7 +133,7 @@
                                 layer.close(index);
                                 //向服务端发送删除指令
                                 layui.$.post(
-                                    '/Customer/DeleteCustomer?Id='+ data.Id,
+                                    '/Customer/DeleteCustomer?Id=' + data.Id,
                                     { id: data.Id },
                                     function (data, status) {
                                         if (data.msg == 'ok') {
@@ -158,17 +158,17 @@
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
-    
+
     <script>
         $(function () {
-            layui.use(['laydate','from'], function () {
+            layui.use(['laydate', 'from'], function () {
                 var laydate = layui.laydate;
                 var from = layui.from;
                 form.on('select(select-soucre)', function (data) {
-                    console.log(data.elem); //得到select原始DOM对象  
-                    //console.log(data.value); //得到被选中的值]  
+                    console.log(data.elem); //得到select原始DOM对象
+                    //console.log(data.value); //得到被选中的值]
                     //$("#batch").val(data.value)
-                    //console.log(data.othis); //得到美化后的DOM对象}); 
+                    //console.log(data.othis); //得到美化后的DOM对象});
                     console.log(data.value);
                 })
                 //执行一个laydate实例
@@ -222,6 +222,47 @@
             })
         })
     </script>
+    <script>
+        layui.use('upload', function () {
+            var upload = layui.upload;
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#enterCustomer-btn' //绑定元素
+                , url: '/Customer/CustomerUploading' //上传接口
+                , accept:'file'
+                , exts: 'xlsx' //允许上传的文件类型
+                , data: {
+
+                }
+                , choose: function (obj) {
+                    //将每次选择的文件追加到文件队列
+                    var files = obj.pushFile();
+
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                        console.log(index); //得到文件索引
+                        console.log(file); //得到文件对象
+                        console.log(result); //得到文件base64编码，比如图片
+
+                        //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+
+                        //这里还可以做一些 append 文件列表 DOM 的操作
+
+                        //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                        //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                    });
+                }
+                , done: function (res) {
+                    //上传完毕回调
+                    console.log(res)
+                }
+                , error: function () {
+                    //请求异常回调
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div>
@@ -263,9 +304,9 @@
                 <button class="layui-btn layui-btn-sm" id="enterCustomer-btn">
                     <i class="layui-icon">&#xe67c;</i>导入
                 </button>
-                <button class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
+                <a href="/Customer/CustomerDown" class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
                     <i class="layui-icon">&#xe601;</i>导出
-                </button>
+                </a>
             </div>
         </div>
         <table id="customerList" lay-filter="test"></table>
