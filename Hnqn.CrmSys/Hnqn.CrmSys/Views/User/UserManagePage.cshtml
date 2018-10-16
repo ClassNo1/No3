@@ -53,7 +53,7 @@
                             , { field: 'UserTypeName', title: '用户类型', width: 100, unresize: true }
                             , { field: 'LoginCount', title: '登录次数', width: 90 }
                             , { field: 'LastLoginTime', title: '最后登录', width: 170, unresize: true, templet: '#titleTpl1' }
-                            , { field: 'Right', title: '操作', width: 200, toolbar: '#barDemo' }
+                            , { field: 'Right', title: '操作', width: 140, toolbar: '#barDemo' }
                         ]]
                         , page: false
                         , done: function (res) {
@@ -120,24 +120,24 @@
                                 area: ['700px', '450px']
                             })
                         }
-                        if (layEvent == 'del') {
-                            layer.confirm('真的删除行么', function (index) {
-                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                                layer.close(index);
-                                //向服务端发送删除指令
-                                layui.$.post(
-                                    '/User/DeleteUser?Id=' + data.Id,
-                                    { id: data.Id },
-                                    function (data, status) {
-                                        if (data.msg == 'ok') {
-                                            layer.msg('删除成功!');
-                                        } else {
-                                            layer.msg('出现未知错误!');
-                                        }
-                                    }
-                                )
-                            });
-                        }
+                        //if (layEvent == 'del') {
+                        //    layer.confirm('真的删除行么', function (index) {
+                        //        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                        //        layer.close(index);
+                        //        //向服务端发送删除指令
+                        //        layui.$.post(
+                        //            '/User/DeleteUser?Id=' + data.Id,
+                        //            { id: data.Id },
+                        //            function (data, status) {
+                        //                if (data.msg == 'ok') {
+                        //                    layer.msg('删除成功!');
+                        //                } else {
+                        //                    layer.msg('出现未知错误!');
+                        //                }
+                        //            }
+                        //        )
+                        //    });
+                        //}
                     });
                 });
             }
@@ -150,7 +150,7 @@
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="editPwd">修改密码</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        @*<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>*@
     </script>
 
     <script>
