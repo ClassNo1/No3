@@ -6,6 +6,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>AddUser</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.all.js"></script>
+    <script src="~/layui/layui.js"></script>
 </head>
 <body>
     <form class="layui-form" action="">
@@ -94,5 +97,17 @@
             </div>
         </div>
     </form>
+
+    <script>
+        layui.use('form', function () {
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

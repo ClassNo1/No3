@@ -324,10 +324,10 @@
     <Content Include="Views\School\UpdateSchool.cshtml" />
     <Content Include="Views\Customer\CustomerEditPage.cshtml" />
     <Content Include="Views\Customer\CustomerAddPage.cshtml" />
-    <Content Include="Views\SysAdmin\AddUser.cshtml" />
-    <Content Include="Views\SysAdmin\UpdateUser.cshtml" />
     <Content Include="Views\User\EditUserPwdPage.cshtml" />
     <Content Include="Views\User\UserManagePage.cshtml" />
+    <Content Include="Views\User\AddUser.cshtml" />
+    <Content Include="Views\User\UpdateUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

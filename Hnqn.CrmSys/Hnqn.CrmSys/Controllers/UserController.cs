@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Hnqn.CrmSys.Models;
 
 namespace Hnqn.CrmSys.Controllers
 {
@@ -114,6 +115,31 @@ namespace Hnqn.CrmSys.Controllers
                                    };
                 return Json(new { code = 0, msg = "", tatol = count, data = userList }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+        [HttpGet]
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddUser(UserInfo user)
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult UpdateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateUser(UserInfo user)
+        {
+            return View();
         }
     }
 }

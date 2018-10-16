@@ -6,28 +6,12 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>UpdateUser</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.all.js"></script>
+    <script src="~/layui/layui.js"></script>
 </head>
 <body>
     <form class="layui-form" action="">
-        <div class="layui-form-item" style="margin-bottom: 6px;">
-            <label class="layui-form-label">用户名</label>
-            <div class="layui-input-block">
-                <input type="text" id="txtSchoolTypeName" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:190px">
-            </div>
-        </div>
-        <div class="layui-form-item" style="margin-bottom: 6px;">
-            <label class="layui-form-label">登录密码</label>
-            <div class="layui-input-block">
-                <input type="text" id="txtSchoolName" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:190px">
-            </div>
-        </div>
-        <div class="layui-form-item" style="margin-bottom: 6px;">
-            <label class="layui-form-label">确认密码</label>
-            <div class="layui-input-block">
-                <input type="text" id="txtHead" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:190px">
-            </div>
-        </div>
-
 
         <div class="layui-form-item" style="margin-bottom: 6px;">
             <label class="layui-form-label">用户类型</label>
@@ -94,5 +78,17 @@
             </div>
         </div>
     </form>
+
+    <script>
+        layui.use('form', function () {
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>
