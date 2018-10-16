@@ -85,25 +85,42 @@
 
     <script>
         $(function () {
-            $('.layui-btn').click(function () {
-                $.ajax({
-                    url: "/Recording/RecordingAddDataAction",
-                    type: 'post',
-                    dataType: 'json',
-                    data: {
-                        Method: $('#RecordMethod').val(),
-                        Degree: $('#RecordDegree').val(),
-                        Result: $('#RecordResult').val(),
-                        RecTime: $('#RecordTime').val(),
-                        SchoolId: $('#SchoolId option:selected').val(),
-                        StatusId: $('#StatusId option:selected').val(),
-                        Context: $('#RecordContent').val(),
-                        RecordCustomerId: $('#RecordCustomerId option:selected').val(),
-                        locks: 1,
-                    }
-                });
-                
-        })
+            layui.use('layer', function () {
+                $('.layui-btn').click(function () {
+                    $.ajax({
+                        url: "/Recording/RecordingAddDataAction",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            Method: $('#RecordMethod').val(),
+                            Degree: $('#RecordDegree').val(),
+                            Result: $('#RecordResult').val(),
+                            RecTime: $('#RecordTime').val(),
+                            SchoolId: $('#SchoolId option:selected').val(),
+                            StatusId: $('#StatusId option:selected').val(),
+                            Context: $('#RecordContent').val(),
+                            RecordCustomerId: $('#RecordCustomerId option:selected').val(),
+                            locks: 1,
+                        },
+                        success: function (data) {
+                            if (data != null) {
+                                layer.msg("修改成功", {
+                                    icon: 1,
+                                    anim: 6
+                                })
+                            }
+                            else {
+                                layer.msg("修改失败", {
+                                    icon: 2,
+                                    anim: 6
+                                })
+                            }
+                        }
+                    });
+
+                })
+            });
+           
     </script>
     <script>
         $(function () {

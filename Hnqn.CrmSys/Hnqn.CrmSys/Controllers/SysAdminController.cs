@@ -16,6 +16,10 @@ namespace Hnqn.CrmSys.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            string Name = Request.Params["Name"];
+            HttpCookie cookie = new HttpCookie(Name);
+            cookie.Expires = DateTime.Now.AddHours(2);
+            Response.Cookies.Add(cookie);
             return View();
         }
         
@@ -30,9 +34,11 @@ namespace Hnqn.CrmSys.Controllers
             };
             bool isLogin = new UserManage().Login(userInfo);
             Code = Session["code"].ToString();
+
             if (isLogin)
             {
                 FormsAuthentication.SetAuthCookie(userInfo.Account.ToString(), false);
+                
                 return Redirect("/Home/Index");
              }
             else if (!(Session["code"].ToString().ToLower()==Code.ToLower()))

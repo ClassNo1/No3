@@ -7,7 +7,7 @@
     <title>Recording</title>
 </head>
 <body>
-    <form class="layui-form" action="" style="background-color: #F0F0F4;border-left: solid 3px rgb(0, 150, 136); height: 54px; font-size: 12px;">
+    <form class="layui-form" action="" style="background-color: #F0F0F4;border-left: solid 5px rgb(0, 150, 136); height: 54px; font-size: 12px;" enctype="multipart/form-data">
         <div class="layui-form-item" style="width: 230px;margin-left: -56px; padding-top: 10px;">
             <label class="layui-form-label">校区</label>
             <div class="layui-input-inline" style="width:92px;">
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div class="demoTable" style="width:230px;margin-top: -53px;float: right;margin-right: 169px;">
+        <div class="demoTable" style="width:230px;margin-top: -53px;float: right;margin-right: 340px;">
             搜索ID：
             <div class="layui-inline" style="width:80px;">
                 <input class="layui-input" name="id" id="demoReload" autocomplete="off">
@@ -49,14 +49,16 @@
         </div>
 
     </form>
-    <button id="Select-IdBtn" class="layui-btn" data-type="reload" style="float: right;margin-top: -53px;margin-right: 200px; font-size: 12px;">搜索</button>
-    <div class="layui-btn-group" style="margin-top: -48px;width: 200px;float: right;margin-right: -5px;">
+    <button id="Select-IdBtn" class="layui-btn" data-type="reload" style="float: right;margin-top: -53px;margin-right: 378px; font-size: 12px;">搜索</button>
+    <div class="layui-btn-group" style="margin-top: -48px;width: 200px;float: right;margin-right: 120px;">
         <button class="layui-btn layui-btn-sm RecordingAddDataBtn" id="addCustomer-btn">
             <i class="layui-icon">&#xe654;</i>添加
         </button>
+        @*<input class="layui-btn layui-btn-sm" id="enterCustomer-btn" type="file" style="float:right;width: 71px; opacity:0;">*@
         <button class="layui-btn layui-btn-sm" id="enterCustomer-btn">
             <i class="layui-icon">&#xe67c;</i>导入
         </button>
+       
         <button class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
             <i class="layui-icon">&#xe601;</i>导出
         </button>
@@ -186,7 +188,7 @@
                             layer.open({
                                 type: 2,
                                 title: '编辑',
-                                content: '/Recording/RecordEdit/' + data.Id,
+                                content: '/Recording/RecordEditPage?Id='+ data.Id,
                                 area: ['500px', '330px']
                             })
                         }
