@@ -30,9 +30,8 @@ namespace Hnqn.CrmSys.Controllers
             if (schoolName==null)
             {
                 var count = work.SchoolInfo.Where(m => m.Lock == 1).ToList().Count();
-                var list1 = work.SchoolInfo.GetPageEntitys(m => m.Lock == 1, limit, index - 1).ToList();
-                var SchList = crm.SchoolInfo.Where(m => m.Lock == 1).ToList();
-                var list = from sch in SchList
+                var list = work.SchoolInfo.GetPageEntitys(m => m.Lock == 1, limit, index - 1).ToList();               
+                var Schlist = from sch in list
                            select new
                            {
                                sch.Id,
@@ -44,14 +43,13 @@ namespace Hnqn.CrmSys.Controllers
                                sch.SchoolAddress,
                                sch.AddTime
                            };
-                return Json(new { code = 0, msg = "", /*数据总数目*/count = list.Count(), data = list1 }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 0, msg = "", tatol = count, data = Schlist }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 var count = work.SchoolInfo.Where(m => m.Lock == 1 && m.SchoolName.Contains(schoolName)).ToList().Count();
-                var list1 = work.SchoolInfo.GetPageEntitys(m => m.Lock == 1 && m.SchoolName.Contains(schoolName), limit, index - 1).ToList();
-                var SchList = work.SchoolInfo.Where(m => m.Lock == 1&&m.SchoolName==schoolName).ToList();
-                var list = from sch in SchList
+                var list = work.SchoolInfo.GetPageEntitys(m => m.Lock == 1 && m.SchoolName.Contains(schoolName), limit, index - 1).ToList();
+                var Schlist = from sch in list
                            select new
                            {
                                sch.Id,
@@ -63,7 +61,7 @@ namespace Hnqn.CrmSys.Controllers
                                sch.SchoolAddress,
                                sch.AddTime
                            };
-                return Json(new { code = 0, msg = "", count = list.Count(), data = list1 }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 0, msg = "", tatol = count, data = Schlist }, JsonRequestBehavior.AllowGet);
             }
            
         }
@@ -93,6 +91,7 @@ namespace Hnqn.CrmSys.Controllers
             SchoolId = Id;
             return View();
         }
+        //通过ID修改当前数据
         public ActionResult GetSchool()
         {
             if (SchoolId != null)
