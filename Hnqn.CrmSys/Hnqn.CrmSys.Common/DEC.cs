@@ -54,9 +54,9 @@ namespace Hnqn.CrmSys.Common
                 stream2.Close();
                 return Encoding.UTF8.GetString(stream1.ToArray());
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return "";
+                throw ex;
             }
         }
     }

@@ -1,0 +1,243 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Recording</title>
+</head>
+<body>
+    <form class="layui-form" action="" style="background-color: #F0F0F4;border-left: solid 3px rgb(0, 150, 136); height: 54px; font-size: 12px;">
+        <div class="layui-form-item" style="width: 230px;margin-left: -56px; padding-top: 10px;">
+            <label class="layui-form-label">校区</label>
+            <div class="layui-input-inline" style="width:92px;">
+                <select name="quiz1">
+                    <option value="" selected="">显示所有</option>
+                    <option value="师范大学">师范大学</option>
+                    <option value="金华大学">金华大学</option>
+                    <option value="南华大学">南华大学</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 230px;float: left;margin-top: -53px;margin-left: 107px;">
+            <label class="layui-form-label">沟通类型</label>
+            <div class="layui-input-inline" style="width:92px;">
+                <select name="quiz1">
+                    <option value="" selected="">显示所有</option>
+                    <option value="电话沟通">电话沟通</option>
+                    <option value="当面沟通">当面沟通</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 230px;margin-top: -53px;float: left;margin-left: 280px;">
+            <label class="layui-form-label">沟通方式</label>
+            <div class="layui-input-inline" style="width:92px;">
+                <select name="quiz1">
+                    <option value="" selected="">显示所有</option>
+                    <option value="电话">电话</option>
+                    <option value="当面">当面</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="demoTable" style="width:230px;margin-top: -53px;float: right;margin-right: 169px;">
+            搜索ID：
+            <div class="layui-inline" style="width:80px;">
+                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+            </div>
+
+        </div>
+
+    </form>
+    <button id="Select-IdBtn" class="layui-btn" data-type="reload" style="float: right;margin-top: -53px;margin-right: 200px; font-size: 12px;">搜索</button>
+    <div class="layui-btn-group" style="margin-top: -48px;width: 200px;float: right;margin-right: -5px;">
+        <button class="layui-btn layui-btn-sm RecordingAddDataBtn" id="addCustomer-btn">
+            <i class="layui-icon">&#xe654;</i>添加
+        </button>
+        <button class="layui-btn layui-btn-sm" id="enterCustomer-btn">
+            <i class="layui-icon">&#xe67c;</i>导入
+        </button>
+        <button class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
+            <i class="layui-icon">&#xe601;</i>导出
+        </button>
+    </div>
+    <table class="layui-hide" id="recordlist" lay-filter="test"></table>
+    <div id="laypage" style="height:50px;"></div>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script src="~/layui/layui.all.js"></script>
+    <script src="~/layui/layui.js"></script>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/layui/css/layui.mobile.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script>
+        //将时间戳转换为日期时间
+        function fmtDate(obj) {
+            var dateVal = obj + "";
+            if (obj != null) {
+                var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                return date.getFullYear() + "-" + month + "-" + currentDate;
+                //+ " " + hours + ":" + minutes + ":" + seconds
+            }
+        }
+    </script>
+    <script type="textml" id="titleTpl">
+        {{fmtDate(d.RecTime)}}
+    </script>
+    <script>
+        $(function () {
+            var curnum = 1;
+            var limitcount = 10;
+            function page(start, limit) {
+                layui.use(['table', 'laypage'], function () {
+                    var table = layui.table,
+                        laypage = layui.laypage;
+                    table.render({
+                        elem: '#recordlist',
+                        url: '/Recording/GetRecord/?index=' + curnum + "&&limit=" + limitcount,
+                        cols: [[ //表头
+                            { field: 'Id', title: 'ID', width: 60, fixed: 'left', unresize: true }
+                            , { field: 'CusName', title: '用户名', width: 80 }
+                            , { field: 'Method', title: '沟通方式', width: 80 }
+                            , { field: 'Degree', title: '意向程度', width: 80 }
+                            , { field: 'Context', title: '沟通内容', width: 180 }
+                            , { field: 'Result', title: '沟通结果', width: 90 }
+                            , { field: 'RecTime', title: '沟通日期', templet: '#titleTpl' }
+                            , { field: 'SchoolName', title: '校区', width: 100 }
+                            , { field: 'UserStatusName', title: '用户状态', width: 120 }
+                            , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                        ]],
+                        page: false,
+                        //数据接口成功之后的函数回掉
+                        done: function (res) {
+                            laypage.render({
+                                elem: 'laypage',
+                                curr: curnum,
+                                count: res.tatol,
+                                limit: limitcount,
+                                layout: ['prev', 'page', 'next', 'count', 'limit'],
+                                jump: function (obj, frist) {
+                                    if (!frist) {
+                                        curnum = obj.curr;
+                                        limitcount = obj.limit;
+                                        page(curnum, limitcount);
+                                    }
+                                }
+                            });
+                        }
+
+                    })
+                    $('#Select-IdBtn').on('click', function () {
+                        var type = $(this).data('type');
+                        active[type] ? active[type].call(this) : '';
+                    });
+                    var active = {
+                        reload: function () {
+                            var orderId = $('#demoReload').val();
+                            if (orderId) {
+                                var index = layer.msg('查询中，请稍候...', { icon: 16, time: false, shade: 0 });
+                                setTimeout(function () {
+                                    table.reload('recordlist', { //表格的id
+                                        where: {
+                                            cusId: $('#demoReload').val()
+                                        },
+                                        page: false,
+                                        done: function (res) {
+                                            laypage.render({
+                                                elem: 'laypage',
+                                                curr: curnum,
+                                                count: res.tatol,
+                                                limit: limitcount,
+                                                layout: ['prev', 'page', 'next', 'count', 'limit'],
+                                                jump: function (obj, frist) {
+                                                    if (!frist) {
+                                                        curnum = obj.curr;
+                                                        limitcount = obj.limit;
+                                                        page(curnum, limitcount);
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                    });
+                                    layer.close(index);
+                                }, 800);
+                            }
+                            else {
+                                layer.msg("请输入ID");
+                            }
+                        },
+                    };
+                    table.on('tool(test)', function (obj) {
+                        var data = obj.data;
+                        var layEvent = obj.event;
+                        var tr = obj.tr;
+
+                        if (layEvent == 'edit') {
+                            console.log($('#recordlist').height() + ' ' + $('#recordlist').width());
+                            layer.open({
+                                type: 2,
+                                title: '编辑',
+                                content: '/Recording/RecordEdit/' + data.Id,
+                                area: ['500px', '330px']
+                            })
+                        }
+
+                        if (layEvent == 'del') {
+                            layer.confirm('真的删除行么', function (index) {
+                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                layer.close(index);
+                                //向服务端发送删除指令
+                                layui.$.post(
+                                    '/Recording/Del',
+                                    { id: data.Id },
+                                    function (data, status) {
+                                        if (data.msg == 'ok') {
+                                            layer.msg('删除成功!');
+                                        } else {
+                                            layer.msg('出现未知错误!');
+                                        }
+                                    }
+                                )
+                            });
+                        }
+                    })
+                })
+            }
+            page(curnum, limitcount);
+
+        })
+    </script>
+    <script>
+        $(function () {
+            //跳转到添加弹出层
+            $('.RecordingAddDataBtn').click(function () {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.open({
+                        type: 2,
+                        content: '/Recording/RecordingAddDataView',
+                        area: ['500px', '300px']
+                    });
+                });              
+            });
+            //导入
+            $('#enterCustomer-btn').click(function () {
+                $.ajax({
+                    url: '',
+                    type: 'post',
+                    
+                });
+            })
+        })
+    </script>
+</body>
+</html>

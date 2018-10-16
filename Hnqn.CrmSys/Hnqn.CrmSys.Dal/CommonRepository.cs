@@ -47,9 +47,16 @@ namespace Hnqn.CrmSys.Dal
         {
             IEnumerable<TEntity> query = null;
             if (where == null)
+            {
                 query = dbSet;
+
+            }
             else
-            query = dbSet.Where(where);
+            {
+                query = dbSet.Where(where);
+            }
+
+
             return query;
         }
 
