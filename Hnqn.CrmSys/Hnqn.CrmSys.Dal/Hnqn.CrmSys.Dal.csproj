@@ -51,9 +51,14 @@
     <Compile Include="CrmDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserManage.cs" />
     <Compile Include="WorkUnit.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Hnqn.CrmSys.Common\Hnqn.CrmSys.Common.csproj">
+      <Project>{FE1E0900-6D55-4B79-9FE9-75B1A0373B2F}</Project>
+      <Name>Hnqn.CrmSys.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hnqn.CrmSys.Models\Hnqn.CrmSys.Models.csproj">
       <Project>{f940a4af-4066-4ae6-9bd0-a62b24f91b5c}</Project>
       <Name>Hnqn.CrmSys.Models</Name>

@@ -166,6 +166,9 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecordingController.cs" />
+
+    <Compile Include="Controllers\SysAdminController.cs" />
+
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -179,6 +182,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Img\timg2KDGBLNU.jpg" />
     <Content Include="layui\css\layui.css" />
     <Content Include="layui\css\layui.mobile.css" />
     <Content Include="layui\css\modules\code.css" />
@@ -311,10 +315,18 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+
+    <Content Include="Views\SysAdmin\Login.cshtml" />
+    <Content Include="Views\Recording\Recording.cshtml" />
+    <Content Include="Views\Recording\RecordEdit.cshtml" />
+    <Content Include="Views\Recording\RecordingAddData.cshtml" />
+
     <Content Include="Views\Customer\CustomerListPage.cshtml" />
     <Content Include="Views\School\Index.cshtml" />
     <Content Include="Views\School\AddSchool.cshtml" />
     <Content Include="Views\School\UpdateSchool.cshtml" />
+    <Content Include="Views\Customer\CustomerEditPage.cshtml" />
+    <Content Include="Views\Customer\CustomerAddPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
