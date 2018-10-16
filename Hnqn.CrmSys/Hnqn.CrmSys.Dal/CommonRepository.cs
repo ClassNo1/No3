@@ -48,6 +48,7 @@ namespace Hnqn.CrmSys.Dal
             IEnumerable<TEntity> query = null;
             if (where == null)
                 query = dbSet;
+            else
             query = dbSet.Where(where);
             return query;
         }
@@ -63,7 +64,7 @@ namespace Hnqn.CrmSys.Dal
         public IEnumerable<TEntity> GetPageEntitys(Func<TEntity, bool> where, int limit = 10, int offset = 0)
         {
             IEnumerable<TEntity> query = GetAll(where);        
-            return query.Skip(offset).Take(limit).ToList();
+            return query.Skip(limit*offset).Take(limit).ToList();
         }
 
         /// <summary>

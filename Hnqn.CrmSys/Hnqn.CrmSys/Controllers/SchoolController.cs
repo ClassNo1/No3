@@ -27,7 +27,6 @@ namespace Hnqn.CrmSys.Controllers
         public ActionResult GetSchoolList(int index, int limit)
         {
             var schoolName = Request.Params["SchoolName"]==""?null:Request.Params["SchoolName"];
-
             if (schoolName==null)
             {
                 var count = work.SchoolInfo.Where(m => m.Lock == 1).ToList().Count();
