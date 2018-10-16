@@ -15,13 +15,11 @@ namespace Hnqn.CrmSys.Controllers
         // GET: Home
         public ActionResult Index()
         {
-
             if (this.User.Identity.IsAuthenticated)
             {
                 return View();
             }
-            return RedirectToAction("Login", "SysAdmin");
-
+            return RedirectToAction("Login","SysAdmin");
         }
     }
 }

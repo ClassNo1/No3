@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户管理</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/layui/css/layui.mobile.css" rel="stylesheet" />
+    <script src="~/layui/layui.all.js"></script>
+    <script src="~/layui/layui.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script>
+        //将时间戳转换为日期时间
+        function fmtDate(obj) {
+            var dateVal = obj + "";
+            if (obj != null) {
+                var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+            }
+        }
+    </script>
+    <script>
+        $(function () {
+            //导航栏
+            layui.use('element', function () {
+                var element = layui.element;
+            });
+            //导航栏
+            var limitcount = 10;
+            var curnum = 1;
+            //加载table组件
+            function productsearch(start, limit) {
+                layui.use(['table', 'laypage'], function () {
+                    var table = layui.table,
+                        laypage = layui.laypage;
+                    //第一个实例
+                    table.render({
+                        elem: '#customerList'
+                        , url: '/User/UserList?index=' + curnum + "&&limit=" + limitcount//数据接口
+                        , id: 'customer'
+                        , defaultToolbar: ['filter', 'print', 'exports']
+                        , cols: [[ //表头
+                            { field: 'Id', title: '编号', width: 80, sort: true, fixed: 'left', unresize: true }
+                            , { field: 'Account', title: '用户名', width: 80, unresize: true }
+                            , { field: 'Name', title: '姓名', width: 80, unresize: true }
+                            , { field: 'SchoolName', title: '校区', width: 120, unresize: true }
+                            , { field: 'TelPhone', title: '联系电话', width: 120, unresize: true }
+                            , { field: 'UserTypeName', title: '用户类型', width: 100, unresize: true }
+                            , { field: 'LoginCount', title: '登录次数', width: 90 }
+                            , { field: 'LastLoginTime', title: '最后登录', width: 170, unresize: true, templet: '#titleTpl1' }
+                            , { field: 'Right', title: '操作', width: 100, toolbar: '#barDemo' }
+                        ]]
+                        , page: false
+                        , done: function (res) {
+                            laypage.render({
+                                elem: 'layui-paging',
+                                count: res.tatol,
+                                curr: curnum,
+                                limit: limitcount,
+                                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        curnum = obj.curr;
+                                        limitcount = obj.limit;
+                                        productsearch(curnum, limitcount);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    //查询用户
+                    $('#customer-where-btn').click(function () {
+                        table.reload('customer', {
+                            where: { //设定异步数据接口的额外参数，任意设
+                                cusName: $('#where-userAccount').val()
+                            },
+                            page: false
+                            , done: function (res) {
+                                laypage.render({
+                                    elem: 'layui-paging',
+                                    count: res.tatol,
+                                    curr: curnum,
+                                    limit: limitcount,
+                                    layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                    jump: function (obj, first) {
+                                        if (!first) {
+                                            curnum = obj.curr;
+                                            limitcount = obj.limit;
+                                            productsearch(curnum, limitcount);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    })
+                    //监听工具条
+                    table.on('tool(test)', function (obj) {
+                        var data = obj.data;
+                        var layEvent = obj.event;
+                        var tr = obj.tr;
+                        if (layEvent == 'editPwd') {
+                            layer.open({
+                                type: 2,
+                                title: '修改密码',
+                                content: '/User/EditUserPwdPage?Id='+ data.Id,
+                                area: ['400px', '350px']
+                            })
+                        }
+                        if (layEvent == 'edit') {
+                            console.log($('.container').height() + ' ' + $('.container').width());
+                            layer.open({
+                                type: 2,
+                                title: '编辑用户',
+                                content: '/User/UserEditPage?Id=' + data.Id,
+                                area: ['700px', '450px']
+                            })
+                        }
+                        //if (layEvent == 'del') {
+                        //    layer.confirm('真的删除行么', function (index) {
+                        //        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                        //        layer.close(index);
+                        //        //向服务端发送删除指令
+                        //        layui.$.post(
+                        //            '/User/DeleteUser?Id=' + data.Id,
+                        //            { id: data.Id },
+                        //            function (data, status) {
+                        //                if (data.msg == 'ok') {
+                        //                    layer.msg('删除成功!');
+                        //                } else {
+                        //                    layer.msg('出现未知错误!');
+                        //                }
+                        //            }
+                        //        )
+                        //    });
+                        //}
+                    });
+                });
+            }
+            productsearch(curnum, limitcount);
+        })
+    </script>
+    <script type="text/html" id="titleTpl1">
+        {{fmtDate(d.LastLoginTime)}}
+    </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="editPwd">修改密码</a>
+        @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>*@
+        @*<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>*@
+    </script>
+
+    <script>
+        $(function () {
+            layui.use(['laydate', 'from'], function () {
+                var laydate = layui.laydate;
+                var from = layui.from;
+                form.on('select(select-soucre)', function (data) {
+                    console.log(data.elem); //得到select原始DOM对象
+                    //console.log(data.value); //得到被选中的值]
+                    //$("#batch").val(data.value)
+                    //console.log(data.othis); //得到美化后的DOM对象});
+                    console.log(data.value);
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+    <div>
+        <div id="layui-search">
+            <form class="layui-form" style="color:rgb(102, 102, 102);background-color:#f2f2f2;padding-bottom:10px;padding-top:10px;border-left:5px solid #086f27;height: 40px;" action="">
+                <div class="layui-form-item" style="width: 200px;float: left;">
+                    <label class="layui-form-label">关键字</label>
+                    <div class="layui-input-block" style="width:80px;text-align:center;">
+                        <input type="text" id="where-userAccount" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+            </form>
+            <button class="layui-btn" id="customer-where-btn" style="margin-top: -50px;width: 90px;float: left;float: left;">
+                <i class="layui-icon">&#xe615;</i>查询
+            </button>
+        </div>
+        <table id="customerList" lay-filter="test"></table>
+        <div id="layui-paging"></div>
+    </div>
+</body>
+</html>

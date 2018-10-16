@@ -54,6 +54,6 @@ namespace Hnqn.CrmSys.Controllers
             Session["code"] = code;
             byte[] img = new ValidataCode().CreateValidateGraphic(code);
             return File(img, @"img/jpeg");
-        }
+        }     
     }
 }

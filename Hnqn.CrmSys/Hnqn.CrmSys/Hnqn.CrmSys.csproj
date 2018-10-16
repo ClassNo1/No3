@@ -168,6 +168,7 @@
     <Compile Include="Controllers\RecordingController.cs" />
     <Compile Include="Controllers\SysAdminController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -318,13 +319,19 @@
     <Content Include="Views\Recording\RecordEditPage.cshtml" />
     <Content Include="Views\Recording\RecordingAddData.cshtml" />
     <Content Include="Views\Customer\CustomerListPage.cshtml" />
+    <Content Include="Views\School\Index.cshtml" />
+    <Content Include="Views\School\AddSchool.cshtml" />
+    <Content Include="Views\School\UpdateSchool.cshtml" />
     <Content Include="Views\Customer\CustomerEditPage.cshtml" />
     <Content Include="Views\Customer\CustomerAddPage.cshtml" />
+    <Content Include="Views\User\EditUserPwdPage.cshtml" />
+    <Content Include="Views\User\UserManagePage.cshtml" />
+    <Content Include="Views\User\AddUser.cshtml" />
+    <Content Include="Views\User\UpdateUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\School\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
