@@ -13,59 +13,59 @@
 
 </head>
 <body>
-        <form class="layui-form" action="">
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">学校类型</label>
-                <div class="layui-input-block">
-                    <input type="text" id="txtSchoolTypeName" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
-                </div>
+    <form class="layui-form" action="">
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">学校类型</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtSchoolTypeName" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
             </div>
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">学校名称</label>
-                <div class="layui-input-block">
-                    <input type="text" id="txtSchoolName" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
-                </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">学校名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtSchoolName" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
             </div>
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">学校负责人</label>
-                <div class="layui-input-block">
-                    <input type="text" id="txtHead" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
-                </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">学校负责人</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtHead" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
             </div>
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">联系电话1</label>
-                <div class="layui-input-block">
-                    <input type="text" id="txtTel1" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
-                </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">联系电话1</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtTel1" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
             </div>
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">联系电话2</label>
-                <div class="layui-input-block">
-                    <input type="text" id="txtTel2" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
-                </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">联系电话2</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtTel2" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:180px">
             </div>
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">学校地址</label>
-                <div class="layui-input-block">
-                    <input type="text" id="txtSchoolAddress" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:260px">
-                </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">学校地址</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtSchoolAddress" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:260px">
             </div>
+        </div>
 
 
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <label class="layui-form-label">学校状态</label>
-                <div class="layui-input-block">
-                    <input type="checkbox" id="cbStatus" lay-skin="switch" lay-text="正常|关闭" checked>
-                </div>
+        @*<div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">学校状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" id="cbStatus" lay-skin="switch" lay-text="正常|关闭" checked>
             </div>
+        </div>*@
 
-            <div class="layui-form-item" style="margin-bottom: 6px;">
-                <div class="layui-input-block">
-                    <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                    <button id="btnReset" type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <div class="layui-input-block">
+                <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
-        </form>
+        </div>
+    </form>
     <script>
         layui.use('form', function () {
             var form = layui.form;
