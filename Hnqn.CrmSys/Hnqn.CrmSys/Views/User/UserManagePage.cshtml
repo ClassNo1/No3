@@ -53,7 +53,7 @@
                             , { field: 'UserTypeName', title: '用户类型', width: 100, unresize: true }
                             , { field: 'LoginCount', title: '登录次数', width: 90 }
                             , { field: 'LastLoginTime', title: '最后登录', width: 170, unresize: true, templet: '#titleTpl1' }
-                            , { field: 'Right', title: '操作', width: 100, toolbar: '#barDemo' }
+                            , { field: 'Right', title: '操作', width: 140, toolbar: '#barDemo' }
                         ]]
                         , page: false
                         , done: function (res) {
@@ -108,16 +108,16 @@
                                 type: 2,
                                 title: '修改密码',
                                 content: '/User/EditUserPwdPage?Id='+ data.Id,
-                                area: ['400px', '350px']
+                                area: ['400px', '350px'],
                             })
                         }
                         if (layEvent == 'edit') {
-                            console.log($('.container').height() + ' ' + $('.container').width());
+                            //console.log($('.container').height() + ' ' + $('.container').width());
                             layer.open({
                                 type: 2,
                                 title: '编辑用户',
-                                content: '/User/UserEditPage?Id=' + data.Id,
-                                area: ['700px', '450px']
+                                content: '/User/UpdateUser?Id='+data.Id,
+                                area: ['700px', '400px'],
                             })
                         }
                         //if (layEvent == 'del') {
@@ -148,9 +148,9 @@
         {{fmtDate(d.LastLoginTime)}}
     </script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="editPwd">修改密码</a>
-        @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>*@
-        @*<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>*@
+        <a class="layui-btn layui-btn-xs" lay-event="editPwd">修改密码</a>       
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+
     </script>
 
     <script>
@@ -184,9 +184,28 @@
             <button class="layui-btn" id="customer-where-btn" style="margin-top: -50px;width: 90px;float: left;float: left;">
                 <i class="layui-icon">&#xe615;</i>查询
             </button>
+
+            <button id="iframe" class="layui-btn" style="margin-top: -50px;width: 115px;float: left;margin-left: 100px;">
+                <i class="layui-icon">&#xe654;</i>添加用户
+            </button>
         </div>
         <table id="customerList" lay-filter="test"></table>
         <div id="layui-paging"></div>
     </div>
+
+    <script>
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            $("#iframe").click(function () {
+                layer.open({
+                    title: "添加用户",
+                    type: 2,
+                    area: ["700px", "450px"],
+                    content: "/User/AddUser",
+                    id: 1,
+                });
+            });
+        });
+    </script>
 </body>
 </html>

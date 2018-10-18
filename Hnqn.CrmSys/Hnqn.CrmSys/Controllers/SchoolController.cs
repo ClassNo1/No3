@@ -78,10 +78,15 @@ namespace Hnqn.CrmSys.Controllers
         {   //添加校区信息
             school.Lock = 1;
             school.AddTime = DateTime.Now;
-            work.SchoolInfo.Insert(school);
-            //保存到数据库
-            work.Save();
-            return RedirectToRoute("AddSchool","School");
+            
+                if (school.SchoolAddress!=null)
+                {
+                    work.SchoolInfo.Insert(school);
+                    //保存到数据库
+                    work.Save();                    
+                }
+            return RedirectToAction("AddSchool","School"); 
+                                
         }
 
         //修改校区弹出页面
@@ -118,13 +123,23 @@ namespace Hnqn.CrmSys.Controllers
         [HttpPost]
         public ActionResult UpdateSchool(SchoolInfo school)
         {   //修改校区信息
+            try
+            {
                 school.Id = Convert.ToInt32(SchoolId);
                 school.Lock = 1;
                 string[] str = { "AddTime" };
-                work.SchoolInfo.Update(school ,str);
+                work.SchoolInfo.Update(school, str);
                 //保存到数据库
-                work.Save();                          
-            return RedirectToRoute("UpdateSchool", "School");
+                work.Save();
+                return Json(new { susser = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { susser = false });
+                throw ex;
+            }
+                                       
+            //return RedirectToRoute("UpdateSchool", "School");
         }
 
         //通过ID（删除）改变数据状态
