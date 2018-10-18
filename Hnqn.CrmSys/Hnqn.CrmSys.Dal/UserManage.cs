@@ -14,8 +14,8 @@ namespace Hnqn.CrmSys.Dal
         public bool Login(UserInfo userInfo)
         {
             
-            CrmDbContext db = new CrmDbContext();      
-            var account = db.UserInfo.Where(m => m.Account == userInfo.Account&&m.LoginPwd==Md5.GetMd5(userInfo.LoginPwd));
+            WorkUnit db = new WorkUnit();      
+            var account = db.UserInfo.Where(m => m.Account == userInfo.Account && m.LoginPwd==Md5.GetMd5(userInfo.LoginPwd) && m.Lock == 1);
             if (account!=null)
             {
                 return true;

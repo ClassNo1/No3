@@ -43,7 +43,7 @@
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" id="userPwd-present" lay-submit lay-filter="demo1">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button type="reset" id="userPwd-anew" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
         </from>
@@ -53,7 +53,6 @@
             layui.use('layer', function () {
                 var layer = layui.layer;
                 $('#userPwd-present').click(function () {
-                    var sex = $('#Gender:checked').val();
                     $.ajax({
                         url: '/User/EditPitchPwd',
                         data: { wornPwd: $('#wornPwd').val(),newPwd1:$('#newPwd1').val(),newPwd2:$('#newPwd2').val()},
@@ -75,6 +74,9 @@
                         }
                     })
                 })
+            })
+            $('#userPwd-anew').click(function () {
+                $('#wornPwd').val(""),$('#newPwd1').val(""),$('#newPwd2').val("")
             })
         })
     </script>

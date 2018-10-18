@@ -8,12 +8,12 @@ using Hnqn.CrmSys.Models;
 using Hnqn.CrmSys.Common;
 using System.IO;
 using System.Data;
+using NPOI.SS.UserModel;
 
 namespace Hnqn.CrmSys.Controllers
 {
     public class CustomerController : Controller
     {
-
         WorkUnit unit = new WorkUnit();
         CrmDbContext db = new CrmDbContext();
         private static string CusId;
@@ -60,21 +60,21 @@ namespace Hnqn.CrmSys.Controllers
                 int Id = Convert.ToInt32(CusId);
                 var customer = unit.CustomerInfo.Where(m => m.Id == Id).ToList();
                 var cusinfo = from cus in customer
-                               select new
-                               {
-                                   cus.Id,
-                                   cus.CusName,
-                                   cus.Age,
-                                   cus.Gender,
-                                   cus.Tel,
-                                   cus.WeChat,
-                                   cus.Address,
-                                   cus.Record,
-                                   cus.CounselingTime
-                               };
+                              select new
+                              {
+                                  cus.Id,
+                                  cus.CusName,
+                                  cus.Age,
+                                  cus.Gender,
+                                  cus.Tel,
+                                  cus.WeChat,
+                                  cus.Address,
+                                  cus.Record,
+                                  cus.CounselingTime
+                              };
                 return Json(cusinfo, JsonRequestBehavior.AllowGet);
             }
-            return RedirectToRoute("CustomerEditPage", "Customer");
+            return RedirectToAction("CustomerEditPage", "Customer");
         }
         /// <summary>
         /// 获取所有客户
@@ -85,6 +85,8 @@ namespace Hnqn.CrmSys.Controllers
         public ActionResult CusomerList(int index, int limit)
         {
             var cusName = Request.Params["cusName"] == "" ? null : Request.Params["cusName"];
+            //var soucreSelected = Request.Params["soucreSelected"] == "" ? null : Request.Params["soucreSelected"];
+            //var statusSelected = Request.Params["statusSelected"] == "" ? null : Request.Params["statusSelected"];
             if (cusName != null)
             {
                 var count = unit.CustomerInfo.Where(m => m.Lock == 1 && m.CusName.Contains(cusName)).ToList().Count();
@@ -96,7 +98,7 @@ namespace Hnqn.CrmSys.Controllers
                                    cus.UserStatusID.Id equals us.Id
                                    join act in db.UserInfo on
                                    cus.AccountId.Id equals act.Id
-                                   where (cus.CusName.Contains(cusName) || cus.Tel == cusName)
+                                   where (cus.CusName.Contains(cusName))
                                    select new
                                    {
                                        cus.Id,
@@ -158,31 +160,35 @@ namespace Hnqn.CrmSys.Controllers
             customer.Lock = 1;
             try
             {
-                int actId = Convert.ToInt32(AccountId);
-                int proId = Convert.ToInt32(ProfessionaId);
-                int ustId = Convert.ToInt32(UserStatusID);
-                int souId = Convert.ToInt32(SourceID);
-                int schId = Convert.ToInt32(SchoolId);
+                if (AccountId != null && ProfessionaId != null && UserStatusID != null && SourceID != null && SchoolId != null)
+                {
+                    int actId = Convert.ToInt32(AccountId);
+                    int proId = Convert.ToInt32(ProfessionaId);
+                    int ustId = Convert.ToInt32(UserStatusID);
+                    int souId = Convert.ToInt32(SourceID);
+                    int schId = Convert.ToInt32(SchoolId);
 
-                UserInfo user = unit.UserInfo.GetAll(m => m.Id == actId).FirstOrDefault();
-                Professiona professiona = unit.Professiona.GetAll(m => m.Id == proId).FirstOrDefault();
-                UserStatus status = unit.UserStatus.GetAll(m => m.Id == ustId).FirstOrDefault();
-                SourceInfo source = unit.SourceInfo.GetAll(m => m.Id == souId).FirstOrDefault();
-                SchoolInfo school = unit.SchoolInfo.GetAll(m => m.Id == schId).FirstOrDefault();
+                    UserInfo user = unit.UserInfo.GetAll(m => m.Id == actId).FirstOrDefault();
+                    Professiona professiona = unit.Professiona.GetAll(m => m.Id == proId).FirstOrDefault();
+                    UserStatus status = unit.UserStatus.GetAll(m => m.Id == ustId).FirstOrDefault();
+                    SourceInfo source = unit.SourceInfo.GetAll(m => m.Id == souId).FirstOrDefault();
+                    SchoolInfo school = unit.SchoolInfo.GetAll(m => m.Id == schId).FirstOrDefault();
 
-                customer.AccountId = user;
-                customer.ProfessionaId = professiona;
-                customer.UserStatusID = status;
-                customer.SourceID = source;
-                customer.SchoolId = school;
+                    customer.AccountId = user;
+                    customer.ProfessionaId = professiona;
+                    customer.UserStatusID = status;
+                    customer.SourceID = source;
+                    customer.SchoolId = school;
 
-                unit.CustomerInfo.Insert(customer);
-                unit.Save();
-                return Json(new { susser = true });
+                    unit.CustomerInfo.Insert(customer);
+                    unit.Save();
+                    return Json(new { suses = true });
+                }
+                return Json(new { suses = false });
             }
             catch (Exception ex)
             {
-                return Json(new { susser = false });
+                return RedirectToAction("CustomerAddPage", "Customer");
                 throw ex;
             }
         }
@@ -202,31 +208,35 @@ namespace Hnqn.CrmSys.Controllers
             customer.Lock = 1;
             try
             {
-                int actId = Convert.ToInt32(AccountId);
-                int proId = Convert.ToInt32(ProfessionaId);
-                int ustId = Convert.ToInt32(UserStatusID);
-                int souId = Convert.ToInt32(SourceID);
-                int schId = Convert.ToInt32(SchoolId);
+                if (AccountId != null && ProfessionaId != null && UserStatusID != null && SourceID != null && SchoolId != null)
+                {
+                    int actId = Convert.ToInt32(AccountId);
+                    int proId = Convert.ToInt32(ProfessionaId);
+                    int ustId = Convert.ToInt32(UserStatusID);
+                    int souId = Convert.ToInt32(SourceID);
+                    int schId = Convert.ToInt32(SchoolId);
 
-                UserInfo user = unit.UserInfo.GetAll(m => m.Id == actId).FirstOrDefault();
-                Professiona professiona = unit.Professiona.GetAll(m => m.Id == proId).FirstOrDefault();
-                UserStatus status = unit.UserStatus.GetAll(m => m.Id == ustId).FirstOrDefault();
-                SourceInfo source = unit.SourceInfo.GetAll(m => m.Id == souId).FirstOrDefault();
-                SchoolInfo school = unit.SchoolInfo.GetAll(m => m.Id == schId).FirstOrDefault();
+                    UserInfo user = unit.UserInfo.GetAll(m => m.Id == actId).FirstOrDefault();
+                    Professiona professiona = unit.Professiona.GetAll(m => m.Id == proId).FirstOrDefault();
+                    UserStatus status = unit.UserStatus.GetAll(m => m.Id == ustId).FirstOrDefault();
+                    SourceInfo source = unit.SourceInfo.GetAll(m => m.Id == souId).FirstOrDefault();
+                    SchoolInfo school = unit.SchoolInfo.GetAll(m => m.Id == schId).FirstOrDefault();
 
-                customer.AccountId = user;
-                customer.ProfessionaId = professiona;
-                customer.UserStatusID = status;
-                customer.SourceID = source;
-                customer.SchoolId = school;
+                    customer.AccountId = user;
+                    customer.ProfessionaId = professiona;
+                    customer.UserStatusID = status;
+                    customer.SourceID = source;
+                    customer.SchoolId = school;
 
-                unit.CustomerInfo.Update(customer);
-                unit.Save();
-                return Json(new { susser = true });
+                    unit.CustomerInfo.Update(customer);
+                    unit.Save();
+                    return Json(new { suses = true });
+                }
+                return Json(new { suses = false });
             }
             catch (Exception ex)
             {
-                return Json(new { susser = false });
+                return RedirectToAction("CustomerEditPage", "Customer");
                 throw ex;
             }
         }
@@ -249,7 +259,7 @@ namespace Hnqn.CrmSys.Controllers
             {
                 throw ex;
             }
-            return RedirectToRoute("CustomerListPage", "Customer");
+            return RedirectToAction("CustomerListPage", "Customer");
         }
         /// <summary>
         /// 获取来源
@@ -330,31 +340,164 @@ namespace Hnqn.CrmSys.Controllers
                                  sou.SchoolName
                              };
             return Json(schoolList, JsonRequestBehavior.AllowGet);
-        } 
+        }
         #region 客户信息导出
         public ActionResult CustomerDown()
         {
+            DataTable MyDt = new DataTable();
+            DataColumn dc = new DataColumn();
+            dc = MyDt.Columns.Add("编号", typeof(string));
+            dc = MyDt.Columns.Add("姓名", typeof(string));
+            dc = MyDt.Columns.Add("年龄", typeof(string));
+            dc = MyDt.Columns.Add("性别", typeof(string));
+            dc = MyDt.Columns.Add("电话", typeof(string));
+            dc = MyDt.Columns.Add("微信", typeof(string));
+            dc = MyDt.Columns.Add("地址", typeof(string));
+            dc = MyDt.Columns.Add("沟通记录", typeof(string));
+            dc = MyDt.Columns.Add("沟通时间", typeof(string));
+            dc = MyDt.Columns.Add("录入者", typeof(string));
+            dc = MyDt.Columns.Add("来源", typeof(string));
+            dc = MyDt.Columns.Add("跟进状态", typeof(string));
+            dc = MyDt.Columns.Add("校区", typeof(string));
+            dc = MyDt.Columns.Add("专业", typeof(string));
             var list = unit.CustomerInfo.Where(m => m.Lock == 1).ToList();
-            DataTable table = null;
-            foreach (var item in list)
+            var cList = from cus in list
+                        select new
+                        {
+                            cus.Id,
+                            cus.CusName,
+                            cus.Age,
+                            cus.Gender,
+                            cus.Tel,
+                            cus.WeChat,
+                            cus.Address,
+                            cus.Record,
+                            AccountName = cus.AccountId.Account,
+                            UserStatusName = cus.UserStatusID.UserStatusName,
+                            cus.CounselingTime,
+                            Source = cus.SourceID.Source,
+                            SchoolName = cus.SchoolId.SchoolName,
+                            ProName = cus.ProfessionaId.ProName
+                        };
+            try
             {
-                table.Columns.Add(item.CusName);
+                foreach (var item in cList)
+                {
+                    DataRow dr = MyDt.NewRow();
+                    dr["编号"] = item.Id.ToString();
+                    dr["姓名"] = item.CusName.ToString();
+                    dr["年龄"] = item.Age.ToString();
+                    dr["性别"] = item.Gender.ToString();
+                    dr["电话"] = item.Tel.ToString();
+                    dr["微信"] = item.WeChat.ToString();
+                    dr["地址"] = item.Address.ToString();
+                    dr["录入者"] = item.AccountName.ToString();
+                    dr["沟通记录"] = item.Record.ToString();
+                    dr["沟通时间"] = item.CounselingTime.ToString();
+                    dr["跟进状态"] = item.UserStatusName.ToString();
+                    dr["来源"] = item.Source.ToString();
+                    dr["校区"] = item.SchoolName.ToString();
+                    dr["专业"] = item.ProName.ToString();
+                    MyDt.Rows.Add(dr);
+                }
+                IWorkbook workbook = ExcelHelper.DataTableToExcel(MyDt);
+                string path = Server.MapPath("/File/导出.xlsx");
+                FileStream fs = new FileStream(path, FileMode.Create);
+                workbook.Write(fs);
+                return File(path, "application/ms-excel", "信息.xlsx");
             }
-            MemoryStream ms = ExcelHelper.DataTableToExcel(table);
-
-            //以什么格式响应
-            Response.ContentType = "application/vnd.ms-excel";
-
-            //告诉浏览器这不是预览是下载 下载的文件名为
-            Response.AddHeader("Content-Disposition", "attachment;Filename=客户信息.xlsx");
-
-            //将内存流以2进制字符写入http输出流
-            Response.BinaryWrite(ms.ToArray());
-            //响应结束
-            Response.End();
-
-            return RedirectToRoute("CustomerListPage", "Customer");
+            catch (Exception ex)
+            {
+                return Json(new { suses = false });
+                throw ex;
+            }
         }
         #endregion 客户信息导出
+
+        #region 客户信息导入
+        public ActionResult CustomerUploading()
+        {
+            #region + 变量
+            //文件大小（字节数）
+            long fileSize = 0;
+            //重命名的文件名称
+            string tempName = "";
+            //物理路径+重命名的文件名称
+            string fileName = "";
+            //文件扩展名
+            string extname = "";
+            //虚拟路径
+            string virtualPath = "/Uploads/Advs/Carousels/";
+            //上传固定路径
+            string path = Server.MapPath(virtualPath);
+            //上传文件夹名称
+            string dir = "";
+            //获取提交的文件
+            var file = Request.Files[0];
+            #endregion
+            #region 服务器本地文件上传处理
+            try
+            {
+                if (file != null && !string.IsNullOrEmpty(file.FileName))
+                {
+                    dir = DateTime.Now.ToString("yyyy-MM-dd");
+                    if (!Directory.Exists(path + dir))
+                    {
+                        Directory.CreateDirectory(path + dir);
+                    }
+                    extname = file.FileName.Substring(file.FileName.LastIndexOf('.'), (file.FileName.Length - file.FileName.LastIndexOf('.')));
+                    tempName = Guid.NewGuid().ToString().Substring(0, 6) + extname;
+                    fileName = path + dir + @"\" + tempName;
+                    fileSize += file.ContentLength;
+                    using (FileStream fs = System.IO.File.Create(fileName))
+                    {
+                        file.InputStream.CopyTo(fs);
+                        fs.Flush();
+                        fs.Close();
+                        DataTable table = ExcelHelper.ExcelToDataTable(fileName);
+                        string aa = table.Rows.Count.ToString();
+                        foreach (DataRow item in table.Rows)
+                        {
+                            CustomerInfo stu = new CustomerInfo();
+                            stu.CusName = item[1].ToString();
+                            string age = item[2].ToString();
+                            stu.Age = int.Parse(age);
+                            stu.Lock = 1;
+                            stu.Gender = item[3].ToString();
+                            stu.Tel = item[4].ToString();
+                            stu.WeChat = item[5].ToString();
+                            stu.Address = item[6].ToString();
+                            stu.Record = item[7].ToString();
+                            stu.CounselingTime = DateTime.Now;
+                            string sourceStr = item[10].ToString();
+                            string statusStr = item[11].ToString();
+                            string userStr = item[9].ToString();
+                            string proStr = item[13].ToString();
+                            string schoolStr = item[12].ToString();
+                            SourceInfo source = unit.SourceInfo.Where(m => m.Source == sourceStr).FirstOrDefault();
+                            UserStatus status = unit.UserStatus.Where(m => m.UserStatusName == statusStr).FirstOrDefault();
+                            UserInfo user = unit.UserInfo.Where(m => m.Account == userStr).FirstOrDefault();
+                            Professiona pro = unit.Professiona.Where(m => m.ProName == proStr).FirstOrDefault();
+                            SchoolInfo school = unit.SchoolInfo.Where(m => m.SchoolName == schoolStr).FirstOrDefault();
+                            stu.AccountId = user;
+                            stu.ProfessionaId = pro;
+                            stu.UserStatusID = status;
+                            stu.SourceID = source;
+                            stu.SchoolId = school;
+                            unit.CustomerInfo.Insert(stu);
+                            unit.Save();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { suses = false });
+                throw ex;
+            }
+            #endregion
+            return RedirectToAction("CustomerListPage", "Customer");
+        }
+        #endregion 客户信息导入
     }
 }

@@ -134,6 +134,7 @@
     <script>
         $(function () {
             $.ajax({
+                async: false,
                 url: '/Customer/GetAllAccount',
                 data: { locks: 1 },
                 type: 'get',
@@ -145,62 +146,66 @@
                         arr.push(option);
                     }
                     $('#select-account').html(arr);
-                    $.ajax({
-                        url: '/Customer/GetAllSource',
-                        data: { locks: 1 },
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (data) {
-                            var arr = [];
-                            for (var i = 0; i < data.length; i++) {
-                                var option = "<option value='" + data[i].Id + "'>" + data[i].Source + "</option>";
-                                arr.push(option);
-                            }
-                            $('#select-soucre').html(arr);
-                            $.ajax({
-                                url: '/Customer/GetAllUserStatus',
-                                data: { locks: 1 },
-                                type: 'get',
-                                dataType: 'json',
-                                success: function (data) {
-                                    var arr = [];
-                                    for (var i = 0; i < data.length; i++) {
-                                        var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
-                                        arr.push(option);
-                                    }
-                                    $('#select-userStatus').html(arr);
-                                    $.ajax({
-                                        url: '/Customer/GetAllSchool',
-                                        data: { locks: 1 },
-                                        type: 'get',
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var arr = [];
-                                            for (var i = 0; i < data.length; i++) {
-                                                var option = "<option value='" + data[i].Id + "'>" + data[i].SchoolName + "</option>";
-                                                arr.push(option);
-                                            }
-                                            $('#select-school').html(arr);
-                                            $.ajax({
-                                                url: '/Customer/GetAllProfessiona',
-                                                data: { locks: 1 },
-                                                type: 'get',
-                                                dataType: 'json',
-                                                success: function (data) {
-                                                    var arr = [];
-                                                    for (var i = 0; i < data.length; i++) {
-                                                        var option = "<option value='" + data[i].Id + "'>" + data[i].ProName + "</option>";
-                                                        arr.push(option);
-                                                    }
-                                                    $('#select-professiona').html(arr);
-                                                }
-                                            })
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    })
+                }
+            })
+            $.ajax({
+                async: false,
+                url: '/Customer/GetAllSource',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].Source + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-soucre').html(arr);
+                }
+            })
+            $.ajax({
+                async: false,
+                url: '/Customer/GetAllUserStatus',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-userStatus').html(arr);
+                }
+            })
+            $.ajax({
+                async: false,
+                url: '/Customer/GetAllSchool',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].SchoolName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-school').html(arr);
+                }
+            })
+            $.ajax({
+                async: false,
+                url: '/Customer/GetAllProfessiona',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].ProName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-professiona').html(arr);
                 }
             })
         })
@@ -217,7 +222,7 @@
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
-                            if (data.susser) {
+                            if (data.suses) {
                                 layer.msg("添加成功", {
                                     icon: 1,
                                     anim: 6

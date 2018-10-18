@@ -28,7 +28,7 @@ namespace Hnqn.CrmSys.Controllers
                 Account = model.Account,
                 LoginPwd = model.LoginPwd
             };
-            bool isLogin = new UserManage().Login(userInfo);
+            bool isLogin = new UserManage().Login(model);
             Code = Session["code"].ToString();
             if (isLogin)
             {

@@ -81,7 +81,9 @@
                     $('#customer-where-btn').click(function () {
                         table.reload('customer', {
                             where: { //设定异步数据接口的额外参数，任意设
-                                cusName: $('#where-customerName').val()
+                                cusName: $('#where-customerName').val(),
+                                soucreSelected: $('#select-soucre option:selected').val(),
+                                statusSelected: $('#select-userStatus option:selected').val()
                             },
                             page: false
                             , done: function (res) {
@@ -171,53 +173,37 @@
                     //console.log(data.othis); //得到美化后的DOM对象});
                     console.log(data.value);
                 })
-                //执行一个laydate实例
-                laydate.render({
-                    elem: '#start_date' //指定元素
-                    , range: true
-                    , min: '2016-1-1'
-                    , theme: 'molv'
-                    , calendar: true
-                    , position: 'fixed'
-                    , zIndex: 99999999
-                    , change: function (value, date) { //监听日期被切换
-                        lay('#testView').html(value);
-                    }
-                    , done: function (value, date, endDate) {
-                        console.log(value); //得到日期生成的值，如：2017-08-18
-                        console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                        console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-                    }
-                });
             });
             $.ajax({
+                async: false,
                 url: '/Customer/GetAllSource',
                 data: { locks: 1 },
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
                     var arr = [];
-                    arr.push("<option value='0'>显示所有 </option>")
+                    arr.push("<option value=''>显示所有 </option>")
                     for (var i = 0; i < data.length; i++) {
                         var option = "<option value='" + data[i].Id + "'>" + data[i].Source + "</option>";
                         arr.push(option);
                     }
                     $('#select-soucre').html(arr);
-                    $.ajax({
-                        url: '/Customer/GetAllUserStatus',
-                        data: { locks: 1 },
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (data) {
-                            var arr = [];
-                            arr.push("<option value='0'>显示所有 </option>")
-                            for (var i = 0; i < data.length; i++) {
-                                var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
-                                arr.push(option);
-                            }
-                            $('#select-userStatus').html(arr);
-                        }
-                    })
+                }
+            })
+            $.ajax({
+                async: false,
+                url: '/Customer/GetAllUserStatus',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    arr.push("<option value=''>显示所有 </option>")
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-userStatus').html(arr);
                 }
             })
         })
@@ -280,13 +266,7 @@
                         <select name="select-userStatus" lay-verify="required" lay-filter="select-userStatus" id="select-userStatus"></select>
                     </div>
                 </div>
-                <div class="layui-form-item" style="margin-top: -53px;width: 300px;float: left;margin-left: 315px;">
-                    <label class="layui-form-label">咨询日期</label>
-                    <div class="layui-input-block" style="width:180px;text-align:center;">
-                        <input type="text" class="layui-input" placeholder="yyyy-mm-dd-yyyy-mm-dd" id="start_date">
-                    </div>
-                </div>
-                <div class="layui-form-item" style="margin-top: -53px;width: 200px;float: left;margin-left: 575px;">
+                <div class="layui-form-item" style="margin-top: -53px;width: 200px;float: left;margin-left: 305px;">
                     <label class="layui-form-label">关键字</label>
                     <div class="layui-input-block" style="width:80px;text-align:center;">
                         <input type="text" id="where-customerName" required lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
@@ -294,7 +274,7 @@
                 </div>
                 
             </form>
-            <button class="layui-btn" id="customer-where-btn" style="margin-top: -53px;width: 90px;float: left;margin-left: 785px;">
+            <button class="layui-btn" id="customer-where-btn" style="margin-top: -53px;width: 90px;float: left;margin-left: 520px;">
                 <i class="layui-icon">&#xe615;</i>查询
             </button>
             <div class="layui-btn-group" style="margin-top: -48px;width: 200px;float: left;margin-left: 920px;">

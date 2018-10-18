@@ -14,7 +14,7 @@ namespace Hnqn.CrmSys.Dal
         public CrmDbContext DB { get { return this.db; } }
         public WorkUnit()
         {
-            this.db = new CrmDbContext();
+            this.db =  ContextSceond.GetContext();
         }
 
         private CommonRepository<UserType> _userType;

@@ -47,7 +47,7 @@ namespace Hnqn.CrmSys.Common
                     }
 
                     //根据表格的行数进行循环创建dataRow
-                    for (int i = 0; i < sheet.LastRowNum; i++)
+                    for (int i = 1; i <= sheet.LastRowNum; i++)
                     {
                         //为datatable创建行
                         dataRow = table.NewRow();
@@ -85,15 +85,10 @@ namespace Hnqn.CrmSys.Common
             catch (Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-                //无论文件上传成功还是失败 都要讲文件删除释放内存
-                File.Delete(path);
-            }          
+            }       
         }
 
-        public static MemoryStream DataTableToExcel(DataTable table)
+        public static IWorkbook DataTableToExcel(DataTable table)
         {
 
             //创建工作簿
@@ -109,7 +104,7 @@ namespace Hnqn.CrmSys.Common
             try
             {
                 //创建内存流  保存excel
-                MemoryStream ms = new MemoryStream();
+               // MemoryStream ms = new MemoryStream();
 
                 //创建一个excel表的一行 放的是标题列
                 row = sheet.CreateRow(0);
@@ -137,8 +132,8 @@ namespace Hnqn.CrmSys.Common
                     }
                 }
                 //将工作簿放入内存流中
-                workbook.Write(ms);
-                return ms;
+             
+                return workbook;
             }
             catch (Exception)
             {
