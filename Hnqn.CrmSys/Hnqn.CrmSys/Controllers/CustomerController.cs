@@ -495,8 +495,8 @@ namespace Hnqn.CrmSys.Controllers
                 return Json(new { suses = false });
                 throw ex;
             }
+            return Json(new { suses = false });
             #endregion
-            return RedirectToAction("CustomerListPage", "Customer");
         }
         #endregion 客户信息导入
     }

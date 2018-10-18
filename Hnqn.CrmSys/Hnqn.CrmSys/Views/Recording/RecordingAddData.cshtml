@@ -129,9 +129,6 @@
                     , layer = layui.layer
                     , layedit = layui.layedit
                     , laydate = layui.laydate;
-
-                
-
                 //创建一个编辑器
                 var editIndex = layedit.build('RecordContent');
 
@@ -143,6 +140,7 @@
         $(function () {
             //获取校区
             $.ajax({
+                async: false,
                 url: '/Recording/RecordingSchoolAction',
                 data: { locks: 1 },
                 type: 'get',
@@ -155,38 +153,40 @@
                         arr.push(option);
                     }
                     $('#SchoolId').html(arr);
-                    //获取状态
-                    $.ajax({
-                        url: '/Recording/GetAllUserStatus',
-                        data: { locks: 1 },
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (data) {
-                            var arr = [];
-                            arr.push("<option value='0'>显示所有 </option>")
-                            for (var i = 0; i < data.length; i++) {
-                                var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
-                                arr.push(option);
-                            }
-                            $('#StatusId').html(arr);
-                        }
-                    })
-                    //获取客户
-                    $.ajax({
-                        url: '/Recording/RecordCustomer',
-                        data: { locks: 1 },
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (data) {
-                            var arr = [];
-                            arr.push("<option value='0'>显示所有 </option>")
-                            for (var i = 0; i < data.length; i++) {
-                                var option = "<option value='" + data[i].Id + "'>" + data[i].CusName + "</option>";
-                                arr.push(option);
-                            }
-                            $('#RecordCustomerId').html(arr);
-                        }
-                    })
+                }
+            })
+            //获取状态
+            $.ajax({
+                async: false,
+                url: '/Recording/GetAllUserStatus',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    arr.push("<option value='0'>显示所有 </option>")
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].UserStatusName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#StatusId').html(arr);
+                }
+            })
+            //获取客户
+            $.ajax({
+                async: false,
+                url: '/Recording/RecordCustomer',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    arr.push("<option value='0'>显示所有 </option>")
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].CusName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#RecordCustomerId').html(arr);
                 }
             })
         })
