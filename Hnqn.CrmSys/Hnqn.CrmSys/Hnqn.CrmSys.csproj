@@ -316,7 +316,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\SysAdmin\Login.cshtml" />
     <Content Include="Views\Recording\Recording.cshtml" />
-    <Content Include="Views\Recording\RecordEdit.cshtml" />
+    <Content Include="Views\Recording\RecordEditPage.cshtml" />
     <Content Include="Views\Recording\RecordingAddData.cshtml" />
     <Content Include="Views\Customer\CustomerListPage.cshtml" />
     <Content Include="Views\School\Index.cshtml" />

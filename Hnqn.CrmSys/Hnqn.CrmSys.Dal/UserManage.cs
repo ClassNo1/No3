@@ -11,16 +11,19 @@ namespace Hnqn.CrmSys.Dal
 {
     public class UserManage
     {
-        public bool Login(UserInfo userInfo)
+        WorkUnit unit = new WorkUnit();
+        
+        public bool Login(UserInfo model)
         {
-            
-            CrmDbContext db = new CrmDbContext();      
-            var account = db.UserInfo.Where(m => m.Account == userInfo.Account&&m.LoginPwd==Md5.GetMd5(userInfo.LoginPwd));
-            if (account!=null)
+            string LoginPwd = Md5.GetMd5(model.LoginPwd);
+            var Login = unit.UserInfo.Where(m => m.Account == model.Account && m.LoginPwd == LoginPwd).FirstOrDefault();
+            if (Login!=null)
             {
                 return true;
             }
             return false;
         }
+
+       
     }
 }

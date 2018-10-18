@@ -14,7 +14,7 @@ namespace Hnqn.CrmSys.Controllers
         // GET: Recording
         WorkUnit unit = new WorkUnit();
         CrmDbContext db = new CrmDbContext();//获取数据源
-       
+        private static string RecId;
         public ActionResult Recording()
         {
             return View();
@@ -106,34 +106,78 @@ namespace Hnqn.CrmSys.Controllers
         {
             return View("RecordEdit");
         }
-        /// <summary>
-        /// 编辑  （有问题）
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult RecordEdit(int Id)
+        public ActionResult RecordEditPage(string Id)
         {
-            var list = unit.Recording.Where(m => m.Lock == 1 && m.Id == Id).ToList();
-            var reclists = from relist in list
-                           select new
-                           {
-                               relist.Id,
-                               relist.Method,
-                               relist.Degree,
-                               relist.Context,
-                               relist.Result,
-                               relist.RecTime,
+            RecId = Id;
+            return View();
+        }
+        public ActionResult GetRecording(string locks)
+        {
+            if (RecId!=null)
+            {
+                int ReId = Convert.ToInt16(RecId);
+                var rec = unit.Recording.Where(m => m.Id == ReId).ToList();
+                var reclist = from rlist in rec
+                              join scId in db.SchoolInfo
+                              on rlist.SchoolId.Id equals scId.Id
+                              join staId in db.UserStatus
+                              on rlist.UserStatusID.Id equals staId.Id
+                              select new
+                              {
+                                  rlist.Id,
+                                  rlist.Method,
+                                  rlist.Degree,
+                                  rlist.Result,
+                                  scId.SchoolName,
+                                  staId.UserStatusName,
+                                  rlist.RecTime,
+                                  rlist.Context
+                              };
+                return Json(reclist, JsonRequestBehavior.AllowGet);
+            }
+            return RedirectToRoute("RecordEditPage", "Recording");
+        }
+       
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RecordEditAction(Recording recording,string SchoolId,string StatusId, string RecordCustomerId,string locks)
+        {
+            recording.Id = Convert.ToInt32(RecId);
+            recording.Lock = 1;
+            int scId = Convert.ToInt16(SchoolId);
+            int staId = Convert.ToInt16(StatusId);
+            int cuId = Convert.ToInt16(RecordCustomerId);
 
-                           };
-            return Json(reclists,JsonRequestBehavior.AllowGet);
+            
+            SchoolInfo school = unit.SchoolInfo.Where(m => m.Id == scId).FirstOrDefault();
+            UserStatus status = unit.UserStatus.Where(m => m.Id == staId).FirstOrDefault();
+            CustomerInfo customerInfo = unit.CustomerInfo.Where(m => m.Id == cuId).FirstOrDefault();
+
+           
+            recording.SchoolId = school;
+            recording.UserStatusID = status;
+            recording.CustomerId = customerInfo;
+            try
+            {
+                unit.Recording.Update(recording);
+                unit.Save();
+                return Json(new { success=1});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = 2 });
+                throw ex;
+            }
+           
         }
         /// <summary>
         /// 校区数据显示
         /// </summary>
         /// <param name="locks"></param>
         /// <returns></returns>
-        public ActionResult RecordEditAction(string locks)
+        public ActionResult RecordingSchoolAction(string locks)
         {
            var lockes = Convert.ToInt16(locks);
             var school = unit.SchoolInfo.Where(m => m.Lock == lockes).ToList();
@@ -229,10 +273,6 @@ namespace Hnqn.CrmSys.Controllers
                              };
             return Json(Customerlist, JsonRequestBehavior.AllowGet);
         }
-
-        public ActionResult Index()
-        {
-            return View();
-        }
+      
     }
 }
