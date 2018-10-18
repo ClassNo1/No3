@@ -1,0 +1,206 @@
+﻿
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdateUser</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.all.js"></script>
+    <script src="~/layui/layui.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+</head>
+<body>
+    <form class="layui-form" lay-filter="example" action="">
+
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">用户类型</label>          
+            <div class="layui-input-block" style="width:100px;">
+                 <select name="select-userType" id="select-userType" lay-filter="aihao"></select>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">管理校区</label>
+            <div class="layui-input-block" style="width:100px;">
+                <select name="select-school" id="select-school" lay-filter="aihao"></select>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="Name" id="Name" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:190px">
+            </div>
+            <label class="layui-form-label">客户性别</label>
+            <div class="layui-input-block">
+                <input name="Gender" id="Gender" value="男" title="男" checked="checked" type="radio">
+                <input name="Gender" value="女" title="女" type="radio">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">手机号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="TelPhone" id="TelPhone" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:190px">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <label class="layui-form-label">登录日期</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" name="LastLoginTime" id="LastLoginTime" lay-verify="date" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+
+
+        @*<div class="layui-form-item" style="margin-bottom: 6px;">
+                <label class="layui-form-label">登录次数</label>
+                <input type="text" name="LoginCount" id="LoginCount" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="width:80px">
+            </div>*@
+
+
+        <div class="layui-form-item" style="margin-bottom: 6px;">
+            <div class="layui-input-block">
+                <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button id="btnReset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        $(function () {
+            $.ajax({
+                async: false,
+                url: '/Customer/GetAllSchool',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].SchoolName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-school').html(arr);
+                }
+            })
+            $.ajax({
+                async: false,
+                url: '/User/GetAllUserType',
+                data: { locks: 1 },
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var arr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var option = "<option value='" + data[i].Id + "'>" + data[i].UserTypeName + "</option>";
+                        arr.push(option);
+                    }
+                    $('#select-userType').html(arr);
+                }
+            })
+            layui.use(['form', 'layedit', 'laydate'], function () {
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate;
+                //日期
+                form.render();
+                laydate.render({
+                    elem: '#date'
+                });
+                laydate.render({
+                    elem: '#date1'
+                });
+                //表单初始赋值
+                $.ajax({
+                    async: false,
+                    url: '/User/GetUser',
+                    data: {},
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            form.val('example', {
+                                "UserTypeName": data[i].UserTypeName
+                                , "SchoolName": data[i].SchoolName
+                                , "Name": data[i].Name
+                                , "Gender": data[i].Gender
+                                , "TelPhone": data[i].TelPhone
+                                , "LastLoginTime": fmtDate(data[i].LastLoginTime)
+                                //, "LoginCount": data[i].LoginCount
+                            })
+                        }
+                    }
+                })
+            });
+           
+        })
+    </script>
+    <script>
+        //将时间戳转换为日期时间
+        function fmtDate(obj) {
+            var dateVal = obj + "";
+            if (obj != null) {
+                var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                return date.getFullYear() + "-" + month + "-" + currentDate;
+            }
+        }
+    </script>
+
+    <script>
+        layui.use(['form', 'laydate'], function () {
+            var form = layui.form;
+            var laydate = layui.laydate;
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+            //日期
+
+            laydate.render({
+                elem: '#date'
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('#btnSubmit').click(function () {
+                var sex = $('#Gender:checked').val();
+                $.ajax({
+                    url: '/User/UpdateUser',
+                    data: {
+                        UserTypeName: $('#select-userType option:selected').val(), SchoolName: $('#select-school option:selected').val(),
+                        Name: $('#Name').val(), Gender: sex == '男' ? '男' : '女', TelPhone: $('#TelPhone').val(),
+                        LastLoginTime: $('#LastLoginTime').val()
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.susser) {
+                            layer.msg("修改成功", {
+                                icon: 1,
+                                anim: 6
+                            })
+                        } else {
+                            layer.msg("修改失败", {
+                                icon: 2,
+                                anim: 6
+                            })
+                        }
+                    }
+                })
+                })
+            })
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Hnqn.CrmSys.Models;
 
 namespace Hnqn.CrmSys.Controllers
 {
@@ -13,6 +14,7 @@ namespace Hnqn.CrmSys.Controllers
         WorkUnit unit = new WorkUnit();
         CrmDbContext db = new CrmDbContext();
         private static string UserId;//用户Id
+
         // GET: User
         /// <summary>
         /// 用户管理页面
@@ -115,5 +117,114 @@ namespace Hnqn.CrmSys.Controllers
                 return Json(new { code = 0, msg = "", tatol = count, data = userList }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        [HttpGet]
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddUser(UserInfo user,string SchoolId,string UserTypeId,string LoginPwd,string LoginPwd1)
+        {
+            user.Lock = 1;
+            user.Status = true;
+            try
+            {
+                int SchId = Convert.ToInt32(SchoolId);
+                int TypeId = Convert.ToInt32(UserTypeId);
+
+                SchoolInfo sch = unit.SchoolInfo.GetAll(m => m.Id == SchId).FirstOrDefault();
+                UserType type = unit.UserType.GetAll(m => m.Id == TypeId).FirstOrDefault();
+
+                user.SchoolId = sch;
+                user.UserTypeId = type;
+                user.LoginPwd = Md5.GetMd5(LoginPwd);
+
+                if (LoginPwd == LoginPwd1 && user != null)
+                {
+                    unit.UserInfo.Insert(user);
+                    unit.Save();
+                }
+                return Json(new { susser = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { susser = false });
+                throw ex;
+            }                              
+        }
+
+
+        [HttpGet]
+        public ActionResult UpdateUser(string Id)
+        {
+            UserId = Id;
+            return View();
+        }
+
+        public ActionResult GetUser()
+        {
+            if (UserId != null)
+            {
+                int Id = Convert.ToInt32(UserId);
+                var UserList = unit.UserInfo.Where(m => m.Id == Id).ToList();
+                var user = from cus in UserList
+                           join sco in db.UserType on
+                           cus.UserTypeId.Id equals sco.Id
+                           join sch in db.SchoolInfo on
+                           cus.SchoolId.Id equals sch.Id
+                           select new
+                           {
+                               cus.Id,
+                               cus.Account,
+                               cus.LoginPwd,
+                               sch.SchoolName,
+                               cus.Name,
+                               cus.Gender,
+                               cus.TelPhone,
+                               cus.LoginCount,
+                               cus.LastLoginTime,
+                               sco.UserTypeName,
+                               cus.Status
+                           };
+                return Json(user, JsonRequestBehavior.AllowGet);
+            }
+            return RedirectToRoute("UpdateUser", "User");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateUser(UserInfo user)
+        {
+            user.Id = Convert.ToInt32(UserId);
+            user.Lock = 1;
+            user.Status = true;
+            string[] str = { "Account", "LoginPwd", "LoginCount" };
+            try
+            {
+                unit.UserInfo.Update(user, str);
+                unit.Save();
+                return Json(new { susser =true});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { susser = false });
+                throw ex;
+            }           
+        }
+
+        [HttpGet]
+        public ActionResult GetAllUserType(string locks)
+        {
+            var user = unit.UserType.Where(m => m.Lock == 1).ToList();
+            var userList = from sou in user
+                           select new
+                             {
+                                 sou.Id,
+                                 sou.UserTypeName
+                             };
+            return Json(userList, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

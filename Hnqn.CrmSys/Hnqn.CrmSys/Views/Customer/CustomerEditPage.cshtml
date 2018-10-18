@@ -254,6 +254,7 @@
                 $('#customer-present').click(function () {
                     var sex = $('#Gender:checked').val();
                     $.ajax({
+
                         url: '/Customer/EditCustomer',
                         data: { CusName: $('#CusName').val(), Age: $('#Age').val(), Gender: sex == '男' ? '男' : '女', Tel: $('#Tel').val(), WeChat: $('#WeChat').val(), Address: $('#Address').val(), SourceID: $('#select-soucre option:selected').val(), Record: $('#Record').val(), UserStatusID: $('#select-userStatus option:selected').val(), CounselingTime: $('#CounselingTime').val(), AccountId: $('#select-account option:selected').val(), ProfessionaId: $('#select-professiona option:selected').val(), SchoolId: $('#select-school option:selected').val() },
                         type: 'post',

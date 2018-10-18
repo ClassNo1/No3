@@ -16,7 +16,7 @@
         }
 
         .container {
-            height: 580px;
+            height: 632px;
             background-image: url('../../Img/timg2KDGBLNU.jpg');
             text-align: center;
         }
@@ -101,42 +101,37 @@
     <script src="~/Scripts/jquery-3.2.1.js"></script>
     <script>
         $(function () {
+            $(".CodeImg").click(function () {
+                $(".CodeImg").attr("src", "/SysAdmin/GetCodeImg?id=" + Math.random());
+            })
             $("#nsubmit").click(function () {
-                //$.ajax({
-                //    url: '/Home/Login',
-                //    data: {
-                //        Account: $("#Account").val(),
-                //        LoginPwd: $("#LoginPwd").val(),
-                //        Code: $("#loginCode").val()
-                //    },
-                //    type: 'post',
-                //    dataType: 'json',
-                //    success: function (data) {
-                //        if (data.susser) {
-                //            document.location = '/Home/Index';
-                //        }
-                //        else {
-                //            alert('账号或密码错误');
-                //        }
-                //    }
-                var Account = $("#Account").val();
-                var LoginPwd = $("#LoginPwd").val();
-                $.post('/SysAdmin/Login', { 'Account': Account, 'LoginPwd': LoginPwd }, function (data) {
-                    if (data) {
-                        document.location = '/Home/Index';
-                    }
-                    else {
-                        alert('账号或密码错误');
+                $.ajax({
+                    url: '/SysAdmin/Login',
+                    data: {
+                        Account: $("#Account").val(),
+                        LoginPwd: $("#LoginPwd").val(),
+                        Code: $("#loginCode").val()
+                    },
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success == 1 && data != null) {
+                            document.location = '/Home/Index';
+                        }
+                        else if (data.success == 3) {
+                            alert('验证码错误');
+                        }
+                        else {
+                            alert('账号或密码错误');
+                        }
                     }
                 });
-                })
-                
-
+            });
         });
     </script>
 </head>
 <body>
-    <form action="/SysAdmin/Login" method="post">
+
         <div class="container">
             <div class="g-wrap">
                 <div id="LoginBox">
@@ -156,19 +151,19 @@
                             <img src="/SysAdmin/GetCodeImg?id=0.111565465" class="CodeImg" />
                         </dd>
                     </dl>
-                    <div class="login-set">
+                    @*<div class="login-set">
                         <label class="auto-login">
                             <input checked="checked" id="rember" type="checkbox">记住密码
                         </label>
-                    </div>
+                    </div>*@
                     <dl>
                         <dd>
-                            <input class="form_btn form_btn--block" id="nsubmit" value="登  录" />
+                            <input class="form_btn form_btn--block" id="nsubmit" value="登  录" type="button"/>
                         </dd>
                     </dl>
                 </div>
             </div>
         </div>
-    </form>
+
 </body>
 </html>
