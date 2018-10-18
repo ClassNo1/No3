@@ -142,9 +142,8 @@ namespace Hnqn.CrmSys.Controllers
         /// 编辑
         /// </summary>
         /// <returns></returns>
-        public ActionResult RecordEditAction(Recording recording,string SchoolId,string StatusId, string RecordCustomerId,string locks,string Id)
+        public ActionResult RecordEditAction(Recording recording,string SchoolId,string StatusId, string RecordCustomerId,string locks)
         {
-            RecId = Id;
             recording.Id = Convert.ToInt32(RecId);
             recording.Lock = 1;
             int scId = Convert.ToInt16(SchoolId);
@@ -164,11 +163,11 @@ namespace Hnqn.CrmSys.Controllers
             {
                 unit.Recording.Update(recording);
                 unit.Save();
-                return Json(recording);
+                return Json(new { success=1});
             }
             catch (Exception ex)
             {
-
+                return Json(new { success = 2 });
                 throw ex;
             }
            
@@ -178,7 +177,7 @@ namespace Hnqn.CrmSys.Controllers
         /// </summary>
         /// <param name="locks"></param>
         /// <returns></returns>
-        public ActionResult RecordingEditAction(string locks)
+        public ActionResult RecordingSchoolAction(string locks)
         {
            var lockes = Convert.ToInt16(locks);
             var school = unit.SchoolInfo.Where(m => m.Lock == lockes).ToList();
@@ -274,22 +273,6 @@ namespace Hnqn.CrmSys.Controllers
                              };
             return Json(Customerlist, JsonRequestBehavior.AllowGet);
         }
-        /// <summary>
-        /// 导出
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult DowdLoadAction()
-        {
-            
-            return View();
-        }
-        /// <summary>
-        /// 导入
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult UpLoadAction()
-        {
-            return View();
-        }
+      
     }
 }

@@ -104,13 +104,13 @@
                         },
                         success: function (data) {
                             if (data != null) {
-                                layer.msg("修改成功", {
+                                layer.msg("添加成功", {
                                     icon: 1,
                                     anim: 6
                                 })
                             }
                             else {
-                                layer.msg("修改失败", {
+                                layer.msg("添加失败", {
                                     icon: 2,
                                     anim: 6
                                 })
@@ -143,7 +143,7 @@
         $(function () {
             //获取校区
             $.ajax({
-                url: '/Recording/RecordEditAction',
+                url: '/Recording/RecordingSchoolAction',
                 data: { locks: 1 },
                 type: 'get',
                 dataType: 'json',

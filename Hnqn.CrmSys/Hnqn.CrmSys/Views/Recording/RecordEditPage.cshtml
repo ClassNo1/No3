@@ -72,10 +72,16 @@
             </div>
         </div>
 
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">沟通内容</label>
+        <div class="layui-form-item">
+            @*<label class="layui-form-label">沟通内容</label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea layui-hide" name="Context"  lay-verify="content" id="Context"></textarea>
+                <textarea class="layui-textarea layui-hide" name="Context" lay-verify="content" id="Context"></textarea>
+            </div>*@
+            <div class="layui-inline">
+                <label class="layui-form-label">沟通内容</label>
+                <div class="layui-input-inline">
+                    <input name="Context" id="Context" lay-verify="required" autocomplete="off" class="layui-input" type="text">
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
@@ -95,19 +101,10 @@
                     , layedit = layui.layedit
                     , laydate = layui.laydate;
 
-                ////日期
-                //laydate.render({
-                //    elem: '#date'
-                //});
-                //laydate.render({
-                //    elem: '#date1'
-                //});
-
-                //创建一个编辑器
-                var editIndex = layedit.build('Context');
 
                 //表单初始赋值
                 $.ajax({
+                    aynsc: false,
                     url: '/Recording/GetRecording',
                     data: { locks: 1 },
                     type: 'get',
@@ -138,7 +135,8 @@
                 var layer = layui.layer;
                 $('.layui-btn').click(function () {
                     $.ajax({
-                        url: '/Recording/RecordEditAction?Id='+ data.Id,
+                        async: false,
+                        url: '/Recording/RecordEditAction',
                         data: {
                             Method: $('#Method').val(),
                             Degree: $('#Degree').val(),
@@ -152,7 +150,7 @@
                         type: 'post',
                         dataType: 'json',
                         success: function (data) {
-                            if (data != null) {
+                            if (data.success == 1) {
                                 layer.msg("修改成功", {
                                     icon: 1,
                                     anim: 6
@@ -166,10 +164,7 @@
                             }
                         }
                     })
-                    //layer.msg("修改成功", {
-                    //    icon: 1,
-                    //    anim: 6
-                    //})
+                   
                    
                 })
             })
@@ -195,6 +190,7 @@
         $(function () {
             //获取客户
             $.ajax({
+                async: false,
                 url: '/Recording/RecordCustomer',
                 data: { locks: 1 },
                 type: 'get',
@@ -211,7 +207,8 @@
             })
             //获取校区
             $.ajax({
-                url: '/Recording/RecordingEditAction',
+                async: false,
+                url: '/Recording/RecordingSchoolAction',
                 data: { locks: 1 },
                 type: 'get',
                 dataType: 'json',
@@ -225,6 +222,7 @@
                     $('#SchoolId').html(arr);
                     //获取状态
                     $.ajax({
+                        async: false,
                         url: '/Recording/GetAllUserStatus',
                         data: { locks: 1 },
                         type: 'get',
