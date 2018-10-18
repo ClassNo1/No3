@@ -21,5 +21,10 @@ namespace Hnqn.CrmSys.Controllers
             }
             return RedirectToAction("Login","SysAdmin");
         }
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "SysAdmin");
+        }
     }
 }

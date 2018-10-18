@@ -1,8 +1,12 @@
 
-﻿using Hnqn.CrmSys.Dal;
+using Hnqn.CrmSys.Common;
+using Hnqn.CrmSys.Dal;
 using Hnqn.CrmSys.Models;
-﻿using System;
+using NPOI.SS.UserModel;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -111,6 +115,11 @@ namespace Hnqn.CrmSys.Controllers
             RecId = Id;
             return View();
         }
+        /// <summary>
+        /// 获取沟通记录
+        /// </summary>
+        /// <param name="locks"></param>
+        /// <returns></returns>
         public ActionResult GetRecording(string locks)
         {
             if (RecId!=null)
@@ -273,6 +282,6 @@ namespace Hnqn.CrmSys.Controllers
                              };
             return Json(Customerlist, JsonRequestBehavior.AllowGet);
         }
-      
+ 
     }
 }

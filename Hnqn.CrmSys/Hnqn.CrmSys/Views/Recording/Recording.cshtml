@@ -54,14 +54,15 @@
         <button class="layui-btn layui-btn-sm RecordingAddDataBtn" id="addCustomer-btn">
             <i class="layui-icon">&#xe654;</i>添加
         </button>
-        @*<input class="layui-btn layui-btn-sm" id="enterCustomer-btn" type="file" style="float:right;width: 71px; opacity:0;">*@
-        <button class="layui-btn layui-btn-sm" id="enterCustomer-btn">
+       
+        @*<button class="layui-btn layui-btn-sm" id="enterCustomer-btn">
             <i class="layui-icon">&#xe67c;</i>导入
         </button>
-       
-        <button class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
-            <i class="layui-icon">&#xe601;</i>导出
-        </button>
+      
+            <button class="layui-btn layui-btn-sm" id="deriveCustomer-btn">
+                <i class="layui-icon">&#xe601;</i>导出
+            </button>*@
+      
     </div>
     <table class="layui-hide" id="recordlist" lay-filter="test"></table>
     <div id="laypage" style="height:50px;"></div>
@@ -231,14 +232,7 @@
                     });
                 });              
             });
-            //导入
-            $('#enterCustomer-btn').click(function () {
-                $.ajax({
-                    url: '',
-                    type: 'post',
-                    
-                });
-            })
+           
         })
     </script>
 </body>
